@@ -1,7 +1,6 @@
 <script lang="ts">
   import DungeonView from './components/DungeonView.svelte';
   import MapView from './components/MapView.svelte';
-  import type { Coordinates } from './types/geometry';
   import type { Level } from './types/levels';
   import type { Player } from './types/player';
   import { Tile, TileBuilder } from './types/tiles';

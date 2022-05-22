@@ -43,6 +43,7 @@
     position: relative;
     width: 320px;
     height: 160px;
+    border: 1px solid black;
   }
   img {
     position: absolute;
@@ -52,5 +53,6 @@
     height: 160px;
     image-rendering: crisp-edges; /* Firefox */
     image-rendering: pixelated;   /* Chrome */
+    border: 1px solid black;
   }
 </style>
