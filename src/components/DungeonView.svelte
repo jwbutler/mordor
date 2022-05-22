@@ -13,6 +13,7 @@
   export let direction: Direction;
 
   let middleImage;
+  let unitImage;
   $: {
     if (tile[direction].includes('door')) {
       middleImage = middle_door;
@@ -21,6 +22,7 @@
     } else {
       middleImage = middle_empty;
     }
+     unitImage = tile.enemies[0]?.sprite?.image || null;
   }
 
   const leftImage = left_wall; // TODO
@@ -31,28 +33,39 @@
 </script>
 
 <div class="dungeon">
-  <img src={topImage} />
-  <img src={leftImage} />
-  <img src={middleImage} />
-  <img src={rightImage} />
-  <img src={bottomImage} />
+  <img class="tile" src={topImage} />
+  <img class="tile" src={leftImage} />
+  <img class="tile" src={middleImage} />
+  <img class="tile" src={rightImage} />
+  <img class="tile" src={bottomImage} />
+  {#if unitImage !== null}
+    <img class="unit" src={unitImage} />
+  {/if}
 </div>
 
 <style>
   .dungeon {
     position: relative;
     width: 320px;
-    height: 160px;
+    height: 180px;
     border: 1px solid black;
   }
   img {
     position: absolute;
+    image-rendering: crisp-edges; /* Firefox */
+    image-rendering: pixelated;   /* Chrome */
+  }
+  .tile {
     left: 0;
     top: 0;
     width: 320px;
-    height: 160px;
-    image-rendering: crisp-edges; /* Firefox */
-    image-rendering: pixelated;   /* Chrome */
+    height: 180px;
     border: 1px solid black;
+  }
+  .unit {
+    width: 160px;
+    height: 160px;
+    left: 80px;
+    top: 20px;
   }
 </style>

@@ -1,12 +1,31 @@
 <script lang="ts">
   import DungeonView from './components/DungeonView.svelte';
   import MapView from './components/MapView.svelte';
+  import UnitView from './components/UnitView.svelte';
+  import { NoobSword } from './types/items';
   import type { Level } from './types/levels';
   import type { Player } from './types/player';
+  import { koboldSprite } from './types/sprites';
   import { Tile, TileBuilder } from './types/tiles';
   import type { Unit } from './types/units';
   import { move, rotate180, rotateLeft, rotateRight } from './utils/geometry';
   import { onMount, onDestroy } from 'svelte';
+  
+  const kobold: Unit = {
+    name: 'Kobold',
+    level: 1,
+    stats: {
+      strength: 3,
+      dexterity: 5,
+      intelligence: 3,
+      wisdom: 2,
+      constitution: 2
+    },
+    equipment: {
+      mainHand: NoobSword
+    },
+    sprite: koboldSprite
+  };
 
   // +-----+
   // |     |
@@ -23,7 +42,7 @@
         new TileBuilder().north('wall').east('wall').build()
       ],
       [
-        new TileBuilder().north('wall').south('wall', 'door').west('wall').build(),
+        new TileBuilder().north('wall').south('wall', 'door').west('wall').enemies(kobold).build(),
         new TileBuilder().north('wall').south('wall').build(),
         new TileBuilder().south('wall').east('wall').build()
       ],
@@ -36,12 +55,19 @@
   };
   
   const playerUnit: Unit = {
-    strength: 5,
-    dexterity: 5,
-    intelligence: 5,
-    wisdom: 5,
-    constitution: 5,
-    charisma: 5
+    name: 'Chigz Jupsiz',
+    level: 1,
+    stats: {
+      strength: 5,
+      dexterity: 5,
+      intelligence: 5,
+      wisdom: 5,
+      constitution: 5
+    },
+    equipment: {
+      mainHand: NoobSword
+    },
+    sprite: koboldSprite
   };
   
   const player: Player = {
@@ -83,6 +109,7 @@
 <main>
   <DungeonView {tile} direction={player.direction} />
   <MapView {level} currentTile={tile} direction={player.direction} />
+  <UnitView unit={playerUnit} />
 </main>
 
 <style>
