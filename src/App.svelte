@@ -100,4 +100,10 @@
     align-items: center;
     gap: 20px;
   }
+  
+  @media (max-width: 767px) {
+    main {
+      flex-direction: column-reverse;
+    }
+  }
 </style>
