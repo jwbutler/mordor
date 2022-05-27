@@ -4,7 +4,7 @@
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
 </script>
 
-<div class="circle">
+<div class="container">
   <button class="arrow up" on:click={navigate('forward')}>
     ↑
   </button>
@@ -20,7 +20,7 @@
 </div>
 
 <style>
-  .circle {
+  .container {
     border: 1px solid black;
     border-radius: 100%;
     position: absolute;
@@ -74,5 +74,17 @@
   .right {
     top: 50%;
     left: 75%;
+  }
+  
+  @media (pointer: fine) {
+    .container {
+      display: none;
+    }
+  }
+  
+  @media (pointer: coarse) {
+    .arrow:hover:not(:active) {
+      background-color: initial;
+    }
   }
 </style>

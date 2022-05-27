@@ -104,6 +104,7 @@
   @media (max-width: 767px) {
     main {
       flex-direction: column-reverse;
+      align-items: center;
     }
   }
 </style>
