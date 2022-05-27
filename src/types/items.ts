@@ -10,8 +10,16 @@ type Equipment = InventoryItem & {
   slot: EquipmentSlot,
   stats: Stats,
   damage: number,
-  armor: number,
-  dodge: number
+  /**
+   * Number from 0 to 1 (ratio of damage mitigated)
+   */
+  mitigation: number,
+  /**
+   * Number from 0 to 1 (chance to dodge)
+   */
+  dodgeChance: number,
+  life: 0,
+  mana: 0
 };
 
 type EquipmentSlot = 'mainHand' | 'offHand' | 'head' | 'body' | 'hands' | 'legs' | 'feet';
@@ -31,8 +39,10 @@ const NoobSword: Equipment = {
   slot: 'mainHand',
   stats: zeroStats,
   damage: 2,
-  armor: 0,
-  dodge: 0
+  mitigation: 0,
+  dodgeChance: 0,
+  life: 0,
+  mana: 0
 };
 
 export type {

@@ -1,10 +1,10 @@
-import type { Direction } from './geometry';
+import type { CompassDirection } from './geometry';
 import type { MapObject } from './objects';
 import type { Unit } from './units';
 
 type TileFeature = 'wall' | 'door';
 
-type Tile = Record<Direction, TileFeature[]> & {
+type Tile = Record<CompassDirection, TileFeature[]> & {
   enemies: Unit[],
   objects: MapObject[]
 };

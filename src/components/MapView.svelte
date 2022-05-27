@@ -1,20 +1,20 @@
 <script type="ts">
-  import { Direction, directionValues } from '../types/geometry';
+  import { CompassDirection, compassDirectionValues } from '../types/geometry';
   import type { Level } from '../types/levels';
   import type { Tile } from '../types/tiles';
   import { titleCase } from '../utils/strings';
 
   export let level: Level;
   export let currentTile: Tile;
-  export let direction: Direction;
+  export let direction: CompassDirection;
 
-  const tileClass = (tile: Tile, currentTile: Tile, currentDirection: Direction): string => {
+  const tileClass = (tile: Tile, currentTile: Tile, currentDirection: CompassDirection): string => {
     const classNames: string[] = ['tile'];
     if (tile === currentTile) {
       classNames.push('current');
       classNames.push(`${currentDirection}Arrow`);
     }
-    for (const direction of directionValues) {
+    for (const direction of compassDirectionValues) {
       if (tile[direction].includes('wall')) {
         classNames.push(`wall${titleCase(direction)}`);
       }

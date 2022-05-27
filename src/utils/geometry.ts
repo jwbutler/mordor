@@ -1,27 +1,37 @@
-import type { Coordinates, Direction } from '../types/geometry';
+import type { Coordinates, CompassDirection, RelativeDirection } from '../types/geometry';
 
-const rotateRight = (direction: Direction): Direction => ({
+const rotateRight = (direction: CompassDirection): CompassDirection => ({
   'north': 'east',
   'east': 'south',
   'south': 'west',
   'west': 'north'
-}[direction] as Direction);
+}[direction] as CompassDirection);
 
-const rotateLeft = (direction: Direction): Direction => ({
+const rotateLeft = (direction: CompassDirection): CompassDirection => ({
   'north': 'west',
   'east': 'north',
   'south': 'east',
   'west': 'south'
-}[direction] as Direction);
+}[direction] as CompassDirection);
 
-const rotate180 = (direction: Direction): Direction => ({
+const rotate180 = (direction: CompassDirection): CompassDirection => ({
   'north': 'south',
   'east': 'west',
   'south': 'north',
   'west': 'east'
-}[direction] as Direction);
+}[direction] as CompassDirection);
 
-const move = ({ x, y }: Coordinates, direction: Direction): Coordinates => {
+const rotate = (currentDirection: CompassDirection, relativeDirection: RelativeDirection): CompassDirection => {
+  switch (relativeDirection) {
+    case 'forward':  return currentDirection;
+    case 'backward': return rotate180(currentDirection);
+    case 'left':     return rotateLeft(currentDirection);
+    case 'right':    return rotateRight(currentDirection);
+    default:         throw new Error(currentDirection);
+  }
+};
+
+const move = ({ x, y }: Coordinates, direction: CompassDirection): Coordinates => {
   switch (direction) {
     case 'north': return { x, y: y - 1 };
     case 'south': return { x, y: y + 1 };
@@ -30,9 +40,31 @@ const move = ({ x, y }: Coordinates, direction: Direction): Coordinates => {
   }
 };
 
+type NavigateProps = {
+  coordinates: Coordinates,
+  relativeDirection: RelativeDirection,
+  compassDirection: CompassDirection
+};
+
+type NavigateResult = {
+  coordinates: Coordinates,
+  direction: CompassDirection
+}
+
+const navigate = ({ coordinates, compassDirection, relativeDirection }: NavigateProps): NavigateResult => {
+  console.log({ coordinates, compassDirection, relativeDirection });
+  return {
+    coordinates: (relativeDirection === 'forward') ? move(coordinates, compassDirection) : coordinates,
+    direction: rotate(compassDirection, relativeDirection)
+  };
+};
+
 export {
   move,
+  navigate,
   rotate180,
   rotateLeft,
   rotateRight
 };
+
+export type { NavigateResult };

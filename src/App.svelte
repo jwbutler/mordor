@@ -1,74 +1,22 @@
 <script lang="ts">
+  import ControlsView from "./components/ControlsView.svelte";
   import DungeonView from './components/DungeonView.svelte';
   import MapView from './components/MapView.svelte';
+  import MessageView from "./components/MessageView.svelte";
   import UnitView from './components/UnitView.svelte';
-  import { NoobSword } from './types/items';
+  import { createFirstLevel } from './database/levels';
+  import { createPlayerUnit } from './database/units';
+  import type { RelativeDirection } from './types/geometry';
   import type { Level } from './types/levels';
   import type { Player } from './types/player';
-  import { koboldSprite } from './types/sprites';
-  import { Tile, TileBuilder } from './types/tiles';
+  import { Tile } from './types/tiles';
   import type { Unit } from './types/units';
-  import { move, rotate180, rotateLeft, rotateRight } from './utils/geometry';
+  import { fight } from './utils/combat';
+  import { move, navigate, NavigateResult } from './utils/geometry';
   import { onMount, onDestroy } from 'svelte';
-  
-  const kobold: Unit = {
-    name: 'Kobold',
-    level: 1,
-    stats: {
-      strength: 3,
-      dexterity: 5,
-      intelligence: 3,
-      wisdom: 2,
-      constitution: 2
-    },
-    equipment: {
-      mainHand: NoobSword
-    },
-    sprite: koboldSprite
-  };
 
-  // +-----+
-  // |     |
-  // +-+-+ |
-  // |     |
-  // +D----+
-  // |     |
-  // +-----+
-  const level: Level = {
-    tiles: [
-      [
-        new TileBuilder().north('wall').south('wall').west('wall').build(),
-        new TileBuilder().north('wall').south('wall').build(),
-        new TileBuilder().north('wall').east('wall').build()
-      ],
-      [
-        new TileBuilder().north('wall').south('wall', 'door').west('wall').enemies(kobold).build(),
-        new TileBuilder().north('wall').south('wall').build(),
-        new TileBuilder().south('wall').east('wall').build()
-      ],
-      [
-        new TileBuilder().north('wall', 'door').south('wall').west('wall').build(),
-        new TileBuilder().north('wall').south('wall').build(),
-        new TileBuilder().north('wall').south('wall').east('wall').build()
-      ]
-    ]
-  };
-  
-  const playerUnit: Unit = {
-    name: 'Chigz Jupsiz',
-    level: 1,
-    stats: {
-      strength: 5,
-      dexterity: 5,
-      intelligence: 5,
-      wisdom: 5,
-      constitution: 5
-    },
-    equipment: {
-      mainHand: NoobSword
-    },
-    sprite: koboldSprite
-  };
+  const level: Level = createFirstLevel();
+  const playerUnit: Unit = createPlayerUnit();
   
   const player: Player = {
     unit: playerUnit,
@@ -79,27 +27,52 @@
   let tile: Tile;
   $: tile = level.tiles[player.coordinates.y][player.coordinates.x];
   
-  const handleKeyDown = (e: KeyboardEvent) => {
+  let messages: string[] = [];
+  
+  const loadTile = async () => {
+    messages = [...messages, `Navigated to (${player.coordinates.x},${player.coordinates.y})`];
+    if (tile.enemies.length > 0) {
+      await fight(player.unit, tile.enemies[0], messages.push);
+    }
+  };
+
+  const _getRelativeDirection = (e: KeyboardEvent): RelativeDirection => {
     switch (e.code) {
       case 'ArrowUp':
       case 'KeyW':
-        if (!tile[player.direction].includes('wall') || tile[player.direction].includes('door')) {
-          player.coordinates = move(player.coordinates, player.direction);
-        }
-        break;
+        return 'forward';
       case 'ArrowLeft':
       case 'KeyA':
-        player.direction = rotateLeft(player.direction);
-        break;
+        return 'left';
       case 'ArrowRight':
       case 'KeyD':
-        player.direction = rotateRight(player.direction);
-        break;
+        return 'right';
       case 'ArrowDown':
       case 'KeyS':
-        player.direction = rotate180(player.direction);
-        break;
+        return 'backward';
     }
+  };
+
+  const handleKeyDown = async (e: KeyboardEvent) => {
+    const relativeDirection = _getRelativeDirection(e);
+    
+    return handleNavigate(relativeDirection);
+  };
+  
+  const handleNavigate = async (relativeDirection: RelativeDirection) => {
+    const { coordinates, direction } = navigate({
+      coordinates: player.coordinates,
+      compassDirection: player.direction,
+      relativeDirection
+    });
+    
+    console.log ({ coordinates, direction });
+    
+    if (!tile[direction].includes('wall') || tile[direction].includes('door')) {
+      player.coordinates = coordinates;
+    }
+    player.direction = direction;
+    await loadTile();
   };
   
   onMount(() => window.addEventListener('keydown', handleKeyDown));
@@ -108,6 +81,8 @@
 
 <main>
   <DungeonView {tile} direction={player.direction} />
+  <ControlsView navigate={handleNavigate} />
+  <MessageView messages={messages} />
   <MapView {level} currentTile={tile} direction={player.direction} />
   <UnitView unit={playerUnit} />
 </main>
@@ -116,7 +91,7 @@
   main {
     display: flex;
     flex-direction: column;
-    width: 640px;
+    width: 512px;
     gap: 20px;
   }
 </style>

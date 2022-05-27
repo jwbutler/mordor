@@ -1,10 +1,10 @@
-import type { Coordinates, Direction } from './geometry';
+import type { Coordinates, CompassDirection } from './geometry';
 import type { Unit } from './units';
 
 type Player = {
   unit: Unit,
   coordinates: Coordinates,
-  direction: Direction
+  direction: CompassDirection
 };
 
 export type { Player };
