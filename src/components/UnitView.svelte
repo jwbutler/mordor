@@ -3,7 +3,7 @@
   import type { Stats } from '../types/stats';
   import { statValues } from '../types/stats';
   import type { Unit } from '../types/units';
-  import { getModifiedStats, subtractStats } from '../utils/stats';
+  import { getModifiedStats } from '../utils/stats';
   import { titleCase } from '../utils/strings';
 
   export let unit: Unit;

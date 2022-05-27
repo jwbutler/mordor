@@ -78,17 +78,26 @@
 </script>
 
 <main>
-  <DungeonView {tile} direction={player.direction} navigate={handleNavigate} />
-  <MessageView messages={messages} />
-  <MapView {level} currentTile={tile} direction={player.direction} />
   <UnitView unit={playerUnit} />
+  <div class="middle">
+    <DungeonView {tile} direction={player.direction} navigate={handleNavigate} />
+    <MessageView messages={messages} />
+    <MapView {level} currentTile={tile} direction={player.direction} />
+  </div>
 </main>
 
 <style>
   main {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .middle {
     width: 512px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
   }
 </style>

@@ -28,7 +28,7 @@
 <style>
   textarea {
     font-family: monospace;
-    width: 320px;
+    width: 100%;
     height: 80px;
     overflow-y: scroll;
     resize: none;
