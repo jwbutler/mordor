@@ -1,4 +1,5 @@
 <script type="ts">
+  import { RelativeDirection } from '../types/geometry';
   import type { CompassDirection } from '../types/geometry';
   import type { Tile } from '../types/tiles';
   import floor from '../assets/floor_ceiling.png';
@@ -6,9 +7,11 @@
   import middle_door from '../assets/middle_door.png';
   import middle_wall from '../assets/middle_wall.png';
   import right_wall from '../assets/right_wall.png';
+  import ControlsView from './ControlsView.svelte';
   
   export let tile: Tile;
   export let direction: CompassDirection;
+  export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
 
   let middleImage;
   let doorImage;
@@ -30,7 +33,6 @@
   const leftImage = left_wall;
   const rightImage = right_wall;
   const floorImage = floor;
-  
 </script>
 
 <div class="dungeon">
@@ -46,6 +48,7 @@
   {#if unitImage !== null}
     <img class="unit" src={unitImage} />
   {/if}
+  <ControlsView {navigate} />
 </div>
 
 <style>

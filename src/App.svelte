@@ -12,7 +12,7 @@
   import { Tile } from './types/tiles';
   import type { Unit } from './types/units';
   import { fight } from './utils/combat';
-  import { move, navigate, NavigateResult } from './utils/geometry';
+  import { navigate } from './utils/geometry';
   import { onMount, onDestroy } from 'svelte';
 
   const level: Level = createFirstLevel();
@@ -78,8 +78,7 @@
 </script>
 
 <main>
-  <DungeonView {tile} direction={player.direction} />
-  <ControlsView navigate={handleNavigate} />
+  <DungeonView {tile} direction={player.direction} navigate={handleNavigate} />
   <MessageView messages={messages} />
   <MapView {level} currentTile={tile} direction={player.direction} />
   <UnitView unit={playerUnit} />

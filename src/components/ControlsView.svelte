@@ -1,5 +1,5 @@
 <script type="ts">
-  import type { CompassDirection, RelativeDirection } from '../types/geometry';
+  import type { RelativeDirection } from '../types/geometry';
 
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
 </script>
@@ -23,16 +23,20 @@
   .circle {
     border: 1px solid black;
     border-radius: 100%;
-    position: relative;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
     width: 128px;
     height: 128px;
-    margin: 0 auto;
+    background-color: #d0d0d0;
+    opacity: 0.75;
   }
 
   .arrow {
     position: absolute;
     transform: translate3d(-50%, -50%, 0);
-    font-size: 32px;
+    font-size: 36px;
+    font-weight: bold;
     border: none;
     border-radius: 100%;
     background: transparent;
@@ -45,11 +49,11 @@
   }
   
   .arrow:hover {
-    background-color: #f8f8f8;
+    background-color: #f0f0f0;
   }
   
   .arrow:active {
-    background-color: #f0f0f0;
+    background-color: #ffffff;
   }
 
   .up {
