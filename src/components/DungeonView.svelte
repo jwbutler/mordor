@@ -72,7 +72,8 @@
   .dungeon {
     position: relative;
     width: var(--width);
-    height: var(--height);
+    max-width: 100vw;
+    aspect-ratio: 4/3;
     border: 1px solid black;
   }
   img {
@@ -83,14 +84,14 @@
   .tile {
     left: 0;
     top: 0;
-    width: var(--width);
-    height: var(--height);
+    width: 100%;
+    height: 100%;
     border: 1px solid black;
   }
   .unit {
-    width: var(--width);
-    height: var(--height);
     left: 0;
     top: 0;
+    width: 100%;
+    height: 100%;
   }
 </style>
