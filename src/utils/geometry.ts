@@ -27,7 +27,7 @@ const rotate = (currentDirection: CompassDirection, relativeDirection: RelativeD
     case 'backward': return rotate180(currentDirection);
     case 'left':     return rotateLeft(currentDirection);
     case 'right':    return rotateRight(currentDirection);
-    default:         throw new Error(currentDirection);
+    default:         throw new Error(relativeDirection);
   }
 };
 
@@ -52,7 +52,6 @@ type NavigateResult = {
 }
 
 const navigate = ({ coordinates, compassDirection, relativeDirection }: NavigateProps): NavigateResult => {
-  console.log({ coordinates, compassDirection, relativeDirection });
   return {
     coordinates: (relativeDirection === 'forward') ? move(coordinates, compassDirection) : coordinates,
     direction: rotate(compassDirection, relativeDirection)

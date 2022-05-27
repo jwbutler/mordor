@@ -65,9 +65,7 @@
       compassDirection: player.direction,
       relativeDirection
     });
-    
-    console.log ({ coordinates, direction });
-    
+
     if (!tile[direction].includes('wall') || tile[direction].includes('door')) {
       player.coordinates = coordinates;
     }
