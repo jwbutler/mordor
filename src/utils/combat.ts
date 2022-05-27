@@ -10,9 +10,11 @@ const takeDamage = (unit: Unit, damage: number) => {
   unit.life = Math.max(0, unit.life - damage);
 };
 
-const fight = async (playerUnit: Unit, enemyUnit: Unit, sendMessage: (message: string) => void) => {
+const fight = async (playerUnit: Unit, enemyUnit: Unit, sendMessage: (message: string) => void, render: () => void) => {
   let attacker = randChoice([playerUnit, enemyUnit]);
   let defender = (attacker === playerUnit ? enemyUnit : playerUnit);
+  console.log(attacker);
+  console.log(defender);
   await sleep(shortSleepMillis);
   
   while (playerUnit.life > 0 && enemyUnit.life > 0) {
@@ -25,9 +27,10 @@ const fight = async (playerUnit: Unit, enemyUnit: Unit, sendMessage: (message: s
         const attackDamage = getAttackDamage(attacker);
         const mitigatedDamage = getMitigatedDamage(defender, attackDamage);
         sendMessage(`${attacker.name} hit ${defender.name} for ${mitigatedDamage}!`);
+        takeDamage(defender, mitigatedDamage);
         if (defender.life <= 0) {
           await sleep(shortSleepMillis);
-          sendMessage(`${defender} dies!`);
+          sendMessage(`${defender.name} dies!`);
         }
       }
     } else {
@@ -36,6 +39,7 @@ const fight = async (playerUnit: Unit, enemyUnit: Unit, sendMessage: (message: s
 
     attacker = defender;
     defender = (attacker === playerUnit ? enemyUnit : playerUnit);
+    render();
     await sleep(longSleepMillis);
   } 
 };

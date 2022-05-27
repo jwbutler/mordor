@@ -1,5 +1,4 @@
 <script lang="ts">
-  import ControlsView from "./components/ControlsView.svelte";
   import DungeonView from './components/DungeonView.svelte';
   import MapView from './components/MapView.svelte';
   import MessageView from "./components/MessageView.svelte";
@@ -24,19 +23,26 @@
     direction: 'east'
   };
   
-  let tile: Tile;
-  $: tile = level.tiles[player.coordinates.y][player.coordinates.x];
-  
-  let messages: string[] = [];
+  let tile = level.tiles[player.coordinates.y][player.coordinates.x];
+
+  const render = () => {
+    tile = tile;
+  };
   
   const loadTile = async () => {
-    messages = [...messages, `Navigated to (${player.coordinates.x},${player.coordinates.y})`];
     if (tile.enemies.length > 0) {
-      await fight(player.unit, tile.enemies[0], messages.push);
+      await fight(
+        player.unit,
+        tile.enemies[0],
+        message => { messages = [...messages, message]; },
+        render
+      );
     }
   };
+  
+  let messages: string[] = [];
 
-  const _getRelativeDirection = (e: KeyboardEvent): RelativeDirection => {
+  const _getRelativeDirection = (e: KeyboardEvent): RelativeDirection | null => {
     switch (e.code) {
       case 'ArrowUp':
       case 'KeyW':
@@ -50,13 +56,16 @@
       case 'ArrowDown':
       case 'KeyS':
         return 'backward';
+      default:
+        return null;
     }
   };
 
   const handleKeyDown = async (e: KeyboardEvent) => {
     const relativeDirection = _getRelativeDirection(e);
-    
-    return handleNavigate(relativeDirection);
+    if (relativeDirection) {
+      await handleNavigate(relativeDirection);
+    }
   };
   
   const handleNavigate = async (relativeDirection: RelativeDirection) => {
@@ -70,6 +79,7 @@
       player.coordinates = coordinates;
     }
     player.direction = direction;
+    tile = level.tiles[player.coordinates.y][player.coordinates.x];
     await loadTile();
   };
   
@@ -80,9 +90,19 @@
 <main>
   <UnitView unit={playerUnit} />
   <div class="middle">
-    <DungeonView {tile} direction={player.direction} navigate={handleNavigate} />
-    <MessageView messages={messages} />
-    <MapView {level} currentTile={tile} direction={player.direction} />
+    <DungeonView
+      {tile}
+      direction={player.direction}
+      navigate={handleNavigate}
+    />
+    <MessageView
+      messages={messages}
+    />
+    <MapView
+      {level}
+      currentTile={tile}
+      direction={player.direction}
+    />
   </div>
 </main>
 
@@ -94,7 +114,6 @@
     gap: 20px;
   }
   .middle {
-    width: 512px;
     display: flex;
     flex-direction: column;
     align-items: center;

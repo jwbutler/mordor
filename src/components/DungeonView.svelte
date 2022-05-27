@@ -12,22 +12,35 @@
   export let tile: Tile;
   export let direction: CompassDirection;
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
+  export let ticks: number;
 
   let middleImage;
-  let doorImage;
-  let unitImage;
   $: {
     if (tile[direction].includes('wall')) {
       middleImage = middle_wall;
     } else {
       middleImage = null;
     }
+  }
+
+  let doorImage;
+  $: {
     if (tile[direction].includes('door')) {
       doorImage = middle_door;
     } else {
       doorImage = null;
     }
-    unitImage = tile.enemies[0]?.sprite?.image || null;
+  }
+  
+  let unitImage;
+  $: {
+    const enemy = tile.enemies[0];
+    console.log(enemy);
+    if (enemy?.life > 0) {
+      unitImage = enemy.sprite?.image || null;
+    } else {
+      unitImage = null;
+    }
   }
 
   const leftImage = left_wall;
@@ -52,10 +65,14 @@
 </div>
 
 <style>
+  :root {
+    --width: 320px;
+    --height: 240px;
+  }
   .dungeon {
     position: relative;
-    width: 512px;
-    height: 384px;
+    width: var(--width);
+    height: var(--height);
     border: 1px solid black;
   }
   img {
@@ -66,13 +83,13 @@
   .tile {
     left: 0;
     top: 0;
-    width: 512px;
-    height: 384px;
+    width: var(--width);
+    height: var(--height);
     border: 1px solid black;
   }
   .unit {
-    width: 512px;
-    height: 384px;
+    width: var(--width);
+    height: var(--height);
     left: 0;
     top: 0;
   }

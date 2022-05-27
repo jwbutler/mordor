@@ -2,35 +2,36 @@
   export let messages: string[];
   let scrollToBottom = true;
   let component: Element;
+  let lastMessageIndex = 0;
   $: {
     if (component) {
       if (scrollToBottom) {
-        // This is a dumb hack born of trial-and-error
-        setTimeout(
-          () => { component.scrollTop = component.scrollHeight - component.clientHeight; },
-          0
-        );
+        lastMessageIndex = messages.length - 1;
       }
     }
   }
   const onScroll = () => {
     scrollToBottom = (component.scrollTop >= component.scrollHeight - component.clientHeight);
   };
+  
+  let lastFourMessages: string[];
+  $: {
+    let startIndex = Math.max(0, lastMessageIndex - 3);
+    lastFourMessages = messages.slice(startIndex, startIndex + 4);
+  }
 </script>
 
 <textarea
   readonly
   bind:this={component}
   on:scroll={onScroll}
-  on:change={() => console.log('change')}
->{messages.join('\n')}</textarea>
+>{lastFourMessages.join('\n')}</textarea>
 
 <style>
   textarea {
     font-family: monospace;
     width: 100%;
-    height: 80px;
-    overflow-y: scroll;
+    height: 72px;
     resize: none;
   }
 </style>
