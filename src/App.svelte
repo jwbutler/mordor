@@ -13,6 +13,7 @@
   import { move, navigate } from './utils/geometry';
   import { onMount, onDestroy } from 'svelte';
   import { getTile } from './utils/levels';
+  import { sleep } from './utils/promises';
   import { isDoorFacingDirection, isWallLike } from './utils/tiles';
 
   const level: Level = createFirstLevel();

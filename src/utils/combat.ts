@@ -3,8 +3,8 @@ import { sleep } from './promises';
 import { randChoice } from './random';
 import { getAttackDamage, getDodgeChance, getHitChance, getMitigatedDamage } from './stats';
 
-const shortSleepMillis = 250;
-const longSleepMillis = 500;
+const shortSleepMillis = 150;
+const longSleepMillis = 400;
 
 const takeDamage = (unit: Unit, damage: number) => {
   unit.life = Math.max(0, unit.life - damage);
