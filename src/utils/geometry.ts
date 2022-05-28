@@ -31,12 +31,12 @@ const rotate = (currentDirection: CompassDirection, relativeDirection: RelativeD
   }
 };
 
-const move = ({ x, y }: Coordinates, direction: CompassDirection): Coordinates => {
+const move = ({ x, y }: Coordinates, direction: CompassDirection, distance: number = 1): Coordinates => {
   switch (direction) {
-    case 'north': return { x, y: y - 1 };
-    case 'south': return { x, y: y + 1 };
-    case 'east':  return { x: x + 1, y };
-    case 'west':  return { x: x - 1, y };
+    case 'north': return { x, y: y - distance };
+    case 'south': return { x, y: y + distance };
+    case 'east':  return { x: x + distance, y };
+    case 'west':  return { x: x - distance, y };
   }
 };
 

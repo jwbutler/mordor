@@ -76,11 +76,15 @@
     left: 75%;
   }
   
-  /*@media (pointer: fine) {
+  @media (pointer: fine) {
     .container {
-      display: none;
+      width: 64px;
+      height: 64px;
     }
-  }*/
+    .arrow {
+      font-size: 16px;
+    }
+  }
   
   @media (pointer: coarse) {
     .arrow:hover:not(:active) {

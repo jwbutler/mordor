@@ -72,6 +72,7 @@
     align-items: center;
     justify-content: center;
     flex-basis: 100%;
+    height: 80px;
   }
 
   .current {
@@ -128,7 +129,10 @@
   
   @media (max-width: 767px) {
     .container {
+      height: 100%;
       flex-basis: 50%;
+    }
+    .tile {
       height: 100%;
     }
   }

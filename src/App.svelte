@@ -93,7 +93,9 @@
   <div class="middle">
     <div class="middleTop">
       <DungeonView
+        {level}
         {tile}
+        coordinates={player.coordinates}
         direction={player.direction}
         navigate={handleNavigate}
       />
@@ -122,15 +124,13 @@
   .middle {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 20px;
     height: 100%;
   }
   
   .middleTop {
-    flex-basis: 50%;
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -152,6 +152,10 @@
       gap: 0;
     }
     
+    .middleTop {
+      flex-basis: 60%;
+    }
+    
     @media (orientation: portrait) {
       .middle {
         flex-direction: column;
@@ -161,6 +165,9 @@
     @media (orientation: landscape) {
       .middle {
         flex-direction: row;
+      }
+      .middleTop {
+        height: 100%;
       }
     }
   }

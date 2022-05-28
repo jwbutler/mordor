@@ -52,7 +52,10 @@ const main = async () => {
     destination: outDir,
     plugins: [imageminPngQuant()]
   });
+  
+  for (const filename of readdirSync(outDir)) {
+    console.log(`${outDir}/${filename}`);
+  }
 };
 
 main().then(() => {});
-
