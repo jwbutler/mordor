@@ -119,20 +119,20 @@
 
 <div class="dungeon">
   <img class="tile" src={floor_ceiling} />
-  <img class="tile" src={left_3} />
-  <img class="tile" src={center_3} />
-  <img class="tile" src={right_3} />
-  <img class="tile" src={left_2} />
-  <img class="tile" src={center_2} />
-  <img class="tile" src={right_2} />
-  <img class="tile" src={left_1} />
-  <img class="tile" src={center_1} />
-  <img class="tile" src={right_1} />
-  <img class="tile" src={left_0} />
-  <img class="tile" src={center_0} />
-  <img class="tile" src={right_0} />
-  <img class="tile" src={door_0} />
-  <img class="unit" src={unitImage} />
+  <img class="tile" src={left_3 || undefined} />
+  <img class="tile" src={center_3 || undefined} />
+  <img class="tile" src={right_3 || undefined} />
+  <img class="tile" src={left_2 || undefined} />
+  <img class="tile" src={center_2 || undefined} />
+  <img class="tile" src={right_2 || undefined} />
+  <img class="tile" src={left_1 || undefined} />
+  <img class="tile" src={center_1 || undefined} />
+  <img class="tile" src={right_1 || undefined} />
+  <img class="tile" src={left_0 || undefined} />
+  <img class="tile" src={center_0 || undefined} />
+  <img class="tile" src={right_0 || undefined} />
+  <img class="tile" src={door_0 || undefined} />
+  <img class="unit" src={unitImage || undefined} />
   <ControlsView {navigate} />
 </div>
 
