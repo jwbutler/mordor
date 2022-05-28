@@ -35,7 +35,6 @@
   let unitImage;
   $: {
     const enemy = tile.enemies[0];
-    console.log(enemy);
     if (enemy?.life > 0) {
       unitImage = enemy.sprite?.image || null;
     } else {
@@ -66,14 +65,13 @@
 
 <style>
   :root {
-    --width: 320px;
-    --height: 240px;
+    --width: 512px;
+    --height: 384px;
   }
   .dungeon {
     position: relative;
     width: var(--width);
-    max-width: 100vw;
-    aspect-ratio: 4/3;
+    height: var(--height);
     border: 1px solid black;
   }
   img {
