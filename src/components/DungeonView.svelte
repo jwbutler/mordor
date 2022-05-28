@@ -26,129 +26,95 @@
   import wall_right_3 from '../assets/gen/wall_right_3j.png';
   import wall_right_4 from '../assets/gen/wall_right_4j.png';
   import { move, rotateLeft, rotateRight } from '../utils/geometry';
-  import { getTile } from '../utils/levels';
+  import { getTile, getTilesInView } from '../utils/levels';
   import { isDoor, isDoorFacingDirection, isWall, isWallLike } from '../utils/tiles';
   import ControlsView from './ControlsView.svelte';
-  
-  // Well, this is really ugly and full of repetition.
-  // Maybe there's a better way to do this... but we only have to write it once, so whatever
-  
+
   export let tile: Tile;
   export let level: Level;
   export let direction: CompassDirection;
   export let coordinates: Coordinates;
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
   
-  $: tile_1_ahead = getTile(level, move(coordinates, direction));
-  $: tile_2_ahead = getTile(level, move(coordinates, direction, 2));
-  $: tile_3_ahead = getTile(level, move(coordinates, direction, 3));
-  $: tile_4_ahead = getTile(level, move(coordinates, direction, 3));
-  $: tile_left = getTile(level, move(coordinates, rotateLeft(direction)));
-  $: tile_left_1_ahead = getTile(level, move(move(coordinates, rotateLeft(direction)), direction));
-  $: tile_left_2_ahead = getTile(level, move(move(coordinates, rotateLeft(direction)), direction, 2));
-  $: tile_left_3_ahead =  getTile(level, move(move(coordinates, rotateLeft(direction)), direction, 3));
-  $: tile_left_4_ahead =  getTile(level, move(move(coordinates, rotateLeft(direction)), direction, 4));
-  $: tile_right = getTile(level, move(coordinates, rotateRight(direction)));
-  $: tile_right_1_ahead = getTile(level, move(move(coordinates, rotateRight(direction)), direction));
-  $: tile_right_2_ahead = getTile(level, move(move(coordinates, rotateRight(direction)), direction, 2));
-  $: tile_right_3_ahead =  getTile(level, move(move(coordinates, rotateRight(direction)), direction, 3));
-  $: tile_right_4_ahead =  getTile(level, move(move(coordinates, rotateRight(direction)), direction, 4));
+  const hallsLeft = [hall_left_0, hall_left_1, hall_left_2, hall_left_3];
+  const wallsLeft = [wall_left_1, wall_left_2, wall_left_3, wall_left_4];
+  const wallsCenter = [wall_center_1, wall_center_2, wall_center_3, wall_center_4];
+  const hallsRight = [hall_right_0, hall_right_1, hall_right_2, hall_right_3];
+  const wallsRight = [wall_right_1, wall_right_2, wall_right_3, wall_right_4];
+  const doors = [middle_door, null, null, null];
 
-  $: left_0 = (isWallLike(tile_left, rotateLeft(direction)))
-    ? hall_left_0
-    : (isWallLike(tile_left_1_ahead, direction))
-    ? wall_left_1
-    : null;
+  const maxDepth = 4;
+  let tiles: Record<string, (Tile | null)[]>;
+  $: tiles = getTilesInView(level, coordinates, direction, maxDepth);
   
-  $: center_0 = (isWall(tile_1_ahead) || isDoor(tile_1_ahead))
-    ? wall_center_1
-    : null;
-  
-  $: door_0 = (isDoorFacingDirection(tile_1_ahead, direction))
-    ? middle_door
-    : null;
-  
-  $: right_0 = (isWallLike(tile_right, rotateRight(direction)))
-    ? hall_right_0
-    : (isWallLike(tile_right_1_ahead, direction))
-    ? wall_right_1
-    : null;
-  
-  $: left_1 = (isWallLike(tile_left_1_ahead, rotateLeft(direction)))
-    ? hall_left_1
-    : (isWallLike(tile_left_2_ahead, direction))
-    ? wall_left_2
-    : null;
-
-  $: center_1 = (isWallLike(tile_2_ahead, direction))
-    ? wall_center_2
-    : null;
-  
-  $: right_1 = (isWallLike(tile_right_1_ahead, rotateRight(direction)))
-    ? hall_right_1
-    : (isWallLike(tile_right_2_ahead, direction))
-    ? wall_right_2
-    : null;
-  
-  $: left_2 = (isWallLike(tile_left_2_ahead, rotateLeft(direction)))
-    ? hall_left_2
-    : (isWallLike(tile_left_3_ahead, direction))
-    ? wall_left_3
-    : null;
-  
-  $: center_2 = (isWallLike(tile_3_ahead, direction))
-    ? wall_center_3
-    : null;
-  
-  $: right_2 = (isWallLike(tile_right_2_ahead, rotateRight(direction)))
-    ? hall_right_2
-    : (isWallLike(tile_right_3_ahead, direction))
-    ? wall_right_3
-    : null;
-
-  $: left_3 = (isWallLike(tile_left_3_ahead, rotateLeft(direction)))
-    ? hall_left_3
-    : (isWallLike(tile_left_4_ahead, direction))
-    ? wall_left_4
-    : null;
-  
-  $: center_3 = (isWallLike(tile_3_ahead, direction))
-    ? wall_center_4
-    : null;
-  
-  $: right_3 = (isWallLike(tile_right_3_ahead, rotateRight(direction)))
-    ? hall_right_3
-    : (isWallLike(tile_right_4_ahead, direction))
-    ? wall_right_4
-    : null;
-
-  let unitImage;
-  $: {
-    const enemy = tile.enemies[0];
-    if (enemy?.life > 0) {
-      unitImage = enemy.sprite?.image || null;
-    } else {
-      unitImage = null;
-    }
+  type DungeonImages = {
+    left: (string | null)[],
+    center: (string | null)[],
+    right: (string | null)[],
+    doors: (string | null)[],
+    unit: (string | null)
   }
+ 
+  const getDungeonImages = (): DungeonImages => {
+    console.log('in getDungeonImages');
+    const images: DungeonImages = {
+      left: [],
+      center: [],
+      right: [],
+      doors: [],
+      unit: null
+    };
+    
+    for (let i = 0; i < maxDepth; i++) {
+      const left = (isWallLike(tiles['left'][i], rotateLeft(direction)))
+        ? hallsLeft[i]
+        : (isWallLike(tiles['left'][i + 1], direction))
+        ? wallsLeft[i]
+        : null;
+      images['left'].push(left);
+      
+      const center = (isWall(tiles['center'][i + 1]) || isDoor(tiles['center'][i + 1]))
+        ? wallsCenter[i]
+        : null;
+      images['center'].push(center);
+      
+      const right = (isWallLike(tiles['right'][i], rotateRight(direction)))
+        ? hallsRight[i]
+        : (isWallLike(tiles['right'][i + 1], direction))
+        ? wallsRight[i]
+        : null;
+      images['right'].push(right);
+      
+      const door = (isDoorFacingDirection(tiles['center'][i + 1], direction))
+        ? doors[i]
+        : null;
+    }
+  
+    const tile = getTile(level, coordinates);
+    const enemy = tile?.enemies[0];
+    if (enemy?.life > 0) {
+      images['unit'] = enemy?.sprite?.image || null;
+    }
+    
+    return images;
+  };
+  
+  let images: DungeonImages;
+  $: {
+    images = getDungeonImages();
+    tile; //dependency
+  }
+  $: console.log(JSON.stringify(images, null, 2));
 </script>
 
 <div class="dungeon">
-  <img class="tile" src={floor_ceiling || ""} alt="" />
-  <img class="tile" src={left_3 || ""} alt="" />
-  <img class="tile" src={center_3 || ""} alt="" />
-  <img class="tile" src={right_3 || ""} alt="" />
-  <img class="tile" src={left_2 || ""} alt="" />
-  <img class="tile" src={center_2 || ""} alt="" />
-  <img class="tile" src={right_2 || ""} alt="" />
-  <img class="tile" src={left_1 || ""} alt="" />
-  <img class="tile" src={center_1 || ""} alt="" />
-  <img class="tile" src={right_1 || ""} alt="" />
-  <img class="tile" src={left_0 || ""} alt="" />
-  <img class="tile" src={center_0 || ""} alt="" />
-  <img class="tile" src={door_0 || ""} alt="" />
-  <img class="tile" src={right_0 || ""} alt="" />
-  <img class="unit" src={unitImage || ""} alt="" />
+  <img class="unit"  alt="" src={floor_ceiling} />
+  {#each [3,2,1,0] as i}
+    {#each ['left', 'center', 'right', 'door'] as category}
+      <img class="tile" alt="" src={images[category]?.[i]} />
+    {/each}
+  {/each}
+  <img class="unit"  alt="" src={images['unit']} />
   <ControlsView {navigate} />
 </div>
 

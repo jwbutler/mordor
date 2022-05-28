@@ -13,7 +13,7 @@
   import { move, navigate } from './utils/geometry';
   import { onMount, onDestroy } from 'svelte';
   import { getTile } from './utils/levels';
-  import { isDoorFacingDirection, isWall, isWallLike } from './utils/tiles';
+  import { isDoorFacingDirection, isWallLike } from './utils/tiles';
 
   const level: Level = createFirstLevel();
   const playerUnit: Unit = createPlayerUnit();
@@ -27,6 +27,7 @@
   let tile = level.tiles[player.coordinates.y][player.coordinates.x];
 
   const render = () => {
+    // a dumb trick to get Svelte to re-render
     tile = tile;
   };
   
@@ -105,8 +106,8 @@
   <div class="middle">
     <div class="middleTop">
       <DungeonView
-        {level}
         {tile}
+        {level}
         coordinates={player.coordinates}
         direction={player.direction}
         navigate={handleNavigate}
