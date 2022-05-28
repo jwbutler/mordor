@@ -14,8 +14,17 @@
   import hall_right_3 from '../assets/gen/hall_right_3.png';
   import middle_door from '../assets/gen/middle_door.png';
   import wall_center_1 from '../assets/gen/wall_center_1.png';
+  import wall_center_2 from '../assets/gen/wall_center_2j.png';
+  import wall_center_3 from '../assets/gen/wall_center_3j.png';
+  import wall_center_4 from '../assets/gen/wall_center_4j.png';
   import wall_left_1 from '../assets/gen/wall_left_1.png';
+  import wall_left_2 from '../assets/gen/wall_left_2j.png';
+  import wall_left_3 from '../assets/gen/wall_left_3j.png';
+  import wall_left_4 from '../assets/gen/wall_left_4j.png';
   import wall_right_1 from '../assets/gen/wall_right_1.png';
+  import wall_right_2 from '../assets/gen/wall_right_2j.png';
+  import wall_right_3 from '../assets/gen/wall_right_3j.png';
+  import wall_right_4 from '../assets/gen/wall_right_4j.png';
   import { move, rotateLeft, rotateRight } from '../utils/geometry';
   import { getTile } from '../utils/levels';
   import { isDoor, isDoorFacingDirection, isWall, isWallLike } from '../utils/tiles';
@@ -33,14 +42,17 @@
   $: tile_1_ahead = getTile(level, move(coordinates, direction));
   $: tile_2_ahead = getTile(level, move(coordinates, direction, 2));
   $: tile_3_ahead = getTile(level, move(coordinates, direction, 3));
+  $: tile_4_ahead = getTile(level, move(coordinates, direction, 3));
   $: tile_left = getTile(level, move(coordinates, rotateLeft(direction)));
   $: tile_left_1_ahead = getTile(level, move(move(coordinates, rotateLeft(direction)), direction));
   $: tile_left_2_ahead = getTile(level, move(move(coordinates, rotateLeft(direction)), direction, 2));
   $: tile_left_3_ahead =  getTile(level, move(move(coordinates, rotateLeft(direction)), direction, 3));
+  $: tile_left_4_ahead =  getTile(level, move(move(coordinates, rotateLeft(direction)), direction, 4));
   $: tile_right = getTile(level, move(coordinates, rotateRight(direction)));
   $: tile_right_1_ahead = getTile(level, move(move(coordinates, rotateRight(direction)), direction));
   $: tile_right_2_ahead = getTile(level, move(move(coordinates, rotateRight(direction)), direction, 2));
   $: tile_right_3_ahead =  getTile(level, move(move(coordinates, rotateRight(direction)), direction, 3));
+  $: tile_right_4_ahead =  getTile(level, move(move(coordinates, rotateRight(direction)), direction, 4));
 
   $: left_0 = (isWallLike(tile_left, rotateLeft(direction)))
     ? hall_left_0
@@ -59,55 +71,55 @@
   $: right_0 = (isWallLike(tile_right, rotateRight(direction)))
     ? hall_right_0
     : (isWallLike(tile_right_1_ahead, direction))
-    ? wall_right_1 // TODO
+    ? wall_right_1
     : null;
   
   $: left_1 = (isWallLike(tile_left_1_ahead, rotateLeft(direction)))
     ? hall_left_1
     : (isWallLike(tile_left_2_ahead, direction))
-    ? null // TODO
+    ? wall_left_2
     : null;
 
   $: center_1 = (isWallLike(tile_2_ahead, direction))
-    ? null // TODO
+    ? wall_center_2
     : null;
   
   $: right_1 = (isWallLike(tile_right_1_ahead, rotateRight(direction)))
     ? hall_right_1
     : (isWallLike(tile_right_2_ahead, direction))
-    ? null // TODO
+    ? wall_right_2
     : null;
   
   $: left_2 = (isWallLike(tile_left_2_ahead, rotateLeft(direction)))
     ? hall_left_2
     : (isWallLike(tile_left_3_ahead, direction))
-    ? null // TODO
+    ? wall_left_3
     : null;
   
   $: center_2 = (isWallLike(tile_3_ahead, direction))
-    ? null // TODO
+    ? wall_center_3
     : null;
   
   $: right_2 = (isWallLike(tile_right_2_ahead, rotateRight(direction)))
     ? hall_right_2
     : (isWallLike(tile_right_3_ahead, direction))
-    ? null // TODO
+    ? wall_right_3
     : null;
 
   $: left_3 = (isWallLike(tile_left_3_ahead, rotateLeft(direction)))
     ? hall_left_3
-    : false // TODO (isWallLike(tile_left_4_ahead, direction))
-    ? null // TODO
+    : (isWallLike(tile_left_4_ahead, direction))
+    ? wall_left_4
     : null;
   
   $: center_3 = (isWallLike(tile_3_ahead, direction))
-    ? null // TODO
+    ? wall_center_4
     : null;
   
   $: right_3 = (isWallLike(tile_right_3_ahead, rotateRight(direction)))
     ? hall_right_3
-    : false // TODO (isWallLike(tile_right_4_ahead, direction))
-    ? null // TODO
+    : (isWallLike(tile_right_4_ahead, direction))
+    ? wall_right_4
     : null;
 
   let unitImage;
