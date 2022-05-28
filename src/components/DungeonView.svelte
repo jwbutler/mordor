@@ -64,10 +64,6 @@
 </div>
 
 <style>
-  :root {
-    --width: 512px;
-    --height: 384px;
-  }
   .dungeon {
     position: relative;
     width: var(--width);

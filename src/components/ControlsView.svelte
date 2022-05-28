@@ -76,11 +76,11 @@
     left: 75%;
   }
   
-  @media (pointer: fine) {
+  /*@media (pointer: fine) {
     .container {
       display: none;
     }
-  }
+  }*/
   
   @media (pointer: coarse) {
     .arrow:hover:not(:active) {

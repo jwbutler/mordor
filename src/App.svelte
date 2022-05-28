@@ -107,6 +107,10 @@
 </main>
 
 <style>
+  :root {
+    --width: 320px;
+    --height: 240px;
+  }
   main {
     display: flex;
     flex-direction: row;
