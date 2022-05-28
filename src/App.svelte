@@ -8,7 +8,6 @@
   import type { RelativeDirection } from './types/geometry';
   import type { Level } from './types/levels';
   import type { Player } from './types/player';
-  import { Tile } from './types/tiles';
   import type { Unit } from './types/units';
   import { fight } from './utils/combat';
   import { navigate } from './utils/geometry';
@@ -88,16 +87,20 @@
 </script>
 
 <main>
-  <UnitView unit={playerUnit} />
+  <div class="left">
+    <UnitView unit={playerUnit} />
+  </div>
   <div class="middle">
-    <DungeonView
-      {tile}
-      direction={player.direction}
-      navigate={handleNavigate}
-    />
-    <MessageView
-      messages={messages}
-    />
+    <div class="middleTop">
+      <DungeonView
+        {tile}
+        direction={player.direction}
+        navigate={handleNavigate}
+      />
+      <MessageView
+        messages={messages}
+      />
+    </div>
     <MapView
       {level}
       currentTile={tile}
@@ -107,27 +110,58 @@
 </main>
 
 <style>
-  :root {
-    --width: 320px;
-    --height: 240px;
-  }
   main {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     gap: 20px;
+    margin: 10px;
+    height: 100%;
   }
+  
   .middle {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    height: 100%;
+  }
+  
+  .middleTop {
+    flex-basis: 50%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
   }
   
   @media (max-width: 767px) {
     main {
-      flex-direction: column-reverse;
       align-items: center;
+      margin: 0;
+      gap: 0;
+    }
+    
+    .left {
+      display: none;
+    }
+    
+    .middle {
+      width: 100%;
+      gap: 0;
+    }
+    
+    @media (orientation: portrait) {
+      .middle {
+        flex-direction: column;
+      }
+    }
+    
+    @media (orientation: landscape) {
+      .middle {
+        flex-direction: row;
+      }
     }
   }
 </style>

@@ -2,3 +2,22 @@
   box-sizing: border-box;
   font-family: sans-serif;
 }
+
+:root {
+  --borderWidth: 1px;
+  --dungeonWidth: 320px;
+  --dungeonHeight: 240px;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+#app {
+  height: 100%;
+}

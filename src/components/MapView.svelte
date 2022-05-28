@@ -26,39 +26,52 @@
   };
 </script>
 
-<div class="map">
-  {#each level.tiles as row}
-    <div class="row">
-      {#each row as tile}
-        <div class={tileClass(tile, currentTile, direction)}></div>
-      {/each}
-    </div>
-  {/each}
+<div class="container">
+  <div class="map">
+    {#each level.tiles as row}
+      <div class="row">
+        {#each row as tile}
+          <div class={tileClass(tile, currentTile, direction)}></div>
+        {/each}
+      </div>
+    {/each}
+  </div>
 </div>
 
 <style>
   :root {
-    --borderWidth: 1px;
     --doorColor: #ff00ff;
+  }
+  
+  .container {
+    width: 100%;
+    padding: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .map {
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: stretch;
   }
 
   .row {
     display: flex;
     flex-direction: row;
+    align-items: stretch;
+    flex-basis: 100%;
   }
 
   .tile {
     border: 0 solid black;
-    width: 64px;
-    height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-basis: 100%;
   }
 
   .current {
@@ -111,5 +124,12 @@
 
   .westArrow::after {
     content: '←'; 
+  }
+  
+  @media (max-width: 767px) {
+    .container {
+      flex-basis: 50%;
+      height: 100%;
+    }
   }
 </style>

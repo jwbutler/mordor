@@ -12,7 +12,6 @@
   export let tile: Tile;
   export let direction: CompassDirection;
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
-  export let ticks: number;
 
   let middleImage;
   $: {
@@ -66,8 +65,8 @@
 <style>
   .dungeon {
     position: relative;
-    width: var(--width);
-    height: var(--height);
+    width: var(--dungeonWidth);
+    height: var(--dungeonHeight);
     border: 1px solid black;
   }
   img {
@@ -87,5 +86,12 @@
     top: 0;
     width: 100%;
     height: 100%;
+  }
+  
+  @media (max-width: 767px) {
+    .dungeon {
+      width: 100%;
+      flex-basis: 80%;
+    }
   }
 </style>
