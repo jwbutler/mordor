@@ -24,6 +24,7 @@ const isDoorFacingDirection = (tile: Tile | null, direction: CompassDirection): 
 };
 
 export {
+  isDoor,
   isDoorFacingDirection,
   isWall,
   isWallLike

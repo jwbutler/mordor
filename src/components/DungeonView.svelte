@@ -3,6 +3,7 @@
   import type { CompassDirection } from '../types/geometry';
   import type { Level } from '../types/levels';
   import type { Tile } from '../types/tiles';
+  import floor_ceiling from '../assets/gen/floor_ceiling.png';
   import hall_left_0 from '../assets/gen/hall_left_0.png';
   import hall_left_1 from '../assets/gen/hall_left_1.png';
   import hall_left_2 from '../assets/gen/hall_left_2.png';
@@ -11,13 +12,13 @@
   import hall_right_1 from '../assets/gen/hall_right_1.png';
   import hall_right_2 from '../assets/gen/hall_right_2.png';
   import hall_right_3 from '../assets/gen/hall_right_3.png';
+  import middle_door from '../assets/gen/middle_door.png';
   import wall_center_1 from '../assets/gen/wall_center_1.png';
   import wall_left_1 from '../assets/gen/wall_left_1.png';
   import wall_right_1 from '../assets/gen/wall_right_1.png';
-  import floor_ceiling from '../assets/gen/floor_ceiling.png';
   import { move, rotateLeft, rotateRight } from '../utils/geometry';
   import { getTile } from '../utils/levels';
-  import { isDoorFacingDirection, isWallLike } from '../utils/tiles';
+  import { isDoor, isDoorFacingDirection, isWall, isWallLike } from '../utils/tiles';
   import ControlsView from './ControlsView.svelte';
   
   // Well, this is really ugly and full of repetition.
@@ -47,11 +48,13 @@
     ? wall_left_1
     : null;
   
-  $: center_0 = (isDoorFacingDirection(tile_1_ahead, direction))
+  $: center_0 = (isWall(tile_1_ahead) || isDoor(tile_1_ahead))
     ? wall_center_1
-    : (isWallLike(tile_1_ahead, direction))
-    ? wall_center_1
-    : null;  
+    : null;
+  
+  $: door_0 = (isDoorFacingDirection(tile_1_ahead, direction))
+    ? middle_door
+    : null;
   
   $: right_0 = (isWallLike(tile_right, rotateRight(direction)))
     ? hall_right_0
@@ -131,6 +134,7 @@
   <img class="tile" src={right_1 || ""} alt="" />
   <img class="tile" src={left_0 || ""} alt="" />
   <img class="tile" src={center_0 || ""} alt="" />
+  <img class="tile" src={door_0 || ""} alt="" />
   <img class="tile" src={right_0 || ""} alt="" />
   <img class="unit" src={unitImage || ""} alt="" />
   <ControlsView {navigate} />
