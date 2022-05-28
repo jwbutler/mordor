@@ -42,7 +42,7 @@
     width: 320px;
   }
   
-  td,th {
+  td {
     border: 1px solid black;
     padding: 5px;
   }

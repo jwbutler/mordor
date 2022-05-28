@@ -17,8 +17,11 @@
   import floor_ceiling from '../assets/gen/floor_ceiling.png';
   import { move, rotateLeft, rotateRight } from '../utils/geometry';
   import { getTile } from '../utils/levels';
-  import { isDoorFacingDirection, isWall, isWallLike } from '../utils/tiles';
+  import { isDoorFacingDirection, isWallLike } from '../utils/tiles';
   import ControlsView from './ControlsView.svelte';
+  
+  // Well, this is really ugly and full of repetition.
+  // Maybe there's a better way to do this... but we only have to write it once, so whatever
   
   export let tile: Tile;
   export let level: Level;
@@ -116,20 +119,20 @@
 </script>
 
 <div class="dungeon">
-  <img class="tile" src={floor_ceiling || ""} />
-  <img class="tile" src={left_3 || ""} />
-  <img class="tile" src={center_3 || ""} />
-  <img class="tile" src={right_3 || ""} />
-  <img class="tile" src={left_2 || ""} />
-  <img class="tile" src={center_2 || ""} />
-  <img class="tile" src={right_2 || ""} />
-  <img class="tile" src={left_1 || ""} />
-  <img class="tile" src={center_1 || ""} />
-  <img class="tile" src={right_1 || ""} />
-  <img class="tile" src={left_0 || ""} />
-  <img class="tile" src={center_0 || ""} />
-  <img class="tile" src={right_0 || ""} />
-  <img class="unit" src={unitImage || ""} />
+  <img class="tile" src={floor_ceiling || ""} alt="" />
+  <img class="tile" src={left_3 || ""} alt="" />
+  <img class="tile" src={center_3 || ""} alt="" />
+  <img class="tile" src={right_3 || ""} alt="" />
+  <img class="tile" src={left_2 || ""} alt="" />
+  <img class="tile" src={center_2 || ""} alt="" />
+  <img class="tile" src={right_2 || ""} alt="" />
+  <img class="tile" src={left_1 || ""} alt="" />
+  <img class="tile" src={center_1 || ""} alt="" />
+  <img class="tile" src={right_1 || ""} alt="" />
+  <img class="tile" src={left_0 || ""} alt="" />
+  <img class="tile" src={center_0 || ""} alt="" />
+  <img class="tile" src={right_0 || ""} alt="" />
+  <img class="unit" src={unitImage || ""} alt="" />
   <ControlsView {navigate} />
 </div>
 
@@ -141,6 +144,10 @@
     border: 1px solid black;
   }
   img {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     position: absolute;
     image-rendering: crisp-edges; /* Firefox */
     image-rendering: pixelated;   /* Chrome */
@@ -149,18 +156,10 @@
     display: none;
   }
   .tile {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
     border: 1px solid black;
   }
-  .unit {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
+  
+  .unit {}
   
   @media (max-width: 767px) {
     .dungeon {
