@@ -13,6 +13,7 @@ import { createKobold } from './units';
 const floor = (): Tile => ({ type: 'floor', enemies: [], objects: [] });
 const wall = (): Tile => ({ type: 'wall', enemies: [], objects: [] });
 const horizontalDoor = (): Tile => ({ type: 'door_horizontal', enemies: [], objects: [] });
+const verticalDoor = (): Tile => ({ type: 'door_vertical', enemies: [], objects: [] });
 
 const createFirstLevel = (): Level => {
   return {
@@ -37,7 +38,7 @@ const createFirstLevel = (): Level => {
         floor(),
         wall(),
       ],
-      [wall(), horizontalDoor(), wall(), wall(), wall(), wall(), wall()],
+      [wall(), verticalDoor(), wall(), wall(), wall(), wall(), wall()],
       [wall(), floor(), floor(), floor(), floor(), floor(), wall()],
       [wall(), wall(), wall(), wall(), wall(), wall(), wall()],
     ],

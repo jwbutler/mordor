@@ -13,8 +13,6 @@ const takeDamage = (unit: Unit, damage: number) => {
 const fight = async (playerUnit: Unit, enemyUnit: Unit, sendMessage: (message: string) => void, render: () => void) => {
   let attacker = randChoice([playerUnit, enemyUnit]);
   let defender = (attacker === playerUnit ? enemyUnit : playerUnit);
-  console.log(attacker);
-  console.log(defender);
   await sleep(shortSleepMillis);
   
   while (playerUnit.life > 0 && enemyUnit.life > 0) {

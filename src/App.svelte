@@ -13,7 +13,7 @@
   import { move, navigate } from './utils/geometry';
   import { onMount, onDestroy } from 'svelte';
   import { getTile } from './utils/levels';
-  import { isDoorFacingDirection, isWall } from './utils/tiles';
+  import { isDoorFacingDirection, isWall, isWallLike } from './utils/tiles';
 
   const level: Level = createFirstLevel();
   const playerUnit: Unit = createPlayerUnit();
@@ -77,7 +77,9 @@
     });
 
     const nextTile = getTile(level, coordinates);
-    if (!isWall(nextTile) || isDoorFacingDirection(nextTile, direction)) {
+    if (isDoorFacingDirection(nextTile, direction)) {
+      player.coordinates = move(coordinates, direction); // assume the developer put a floor tile there...
+    } else if (!isWallLike(nextTile, direction)) {
       player.coordinates = coordinates;
     }
     player.direction = direction;
