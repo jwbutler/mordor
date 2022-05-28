@@ -15,9 +15,9 @@
   import wall_left_1 from '../assets/gen/wall_left_1.png';
   import wall_right_1 from '../assets/gen/wall_right_1.png';
   import floor_ceiling from '../assets/floor_ceiling.png';
-  import middle_door from '../assets/middle_door.png';
   import { move, rotateLeft, rotateRight } from '../utils/geometry';
   import { getTile } from '../utils/levels';
+  import { isDoorFacingDirection, isWall, isWallLike } from '../utils/tiles';
   import ControlsView from './ControlsView.svelte';
   
   export let tile: Tile;
@@ -38,72 +38,70 @@
   $: tile_right_2_ahead = getTile(level, move(move(coordinates, rotateRight(direction)), direction, 2));
   $: tile_right_3_ahead =  getTile(level, move(move(coordinates, rotateRight(direction)), direction, 3));
 
-  $: left_0 = ((tile[rotateLeft(direction)].includes('wall')))
+  $: left_0 = (isWallLike(tile_left, rotateLeft(direction)))
     ? hall_left_0
-    : ((tile_left?.[direction].includes('wall')))
-    ? wall_left_1 // TODO
+    : (isWallLike(tile_left_1_ahead, direction))
+    ? wall_left_1
     : null;
   
-  $: center_0 = ((tile[direction]?.includes('wall')))
+  $: center_0 = (isDoorFacingDirection(tile_1_ahead, direction))
+    ? wall_center_1
+    : (isWallLike(tile_1_ahead, direction))
     ? wall_center_1
     : null;  
   
-  $: right_0 = ((tile[rotateRight(direction)].includes('wall')))
+  $: right_0 = (isWallLike(tile_right, rotateRight(direction)))
     ? hall_right_0
-    : ((tile_right?.[direction].includes('wall')))
+    : (isWallLike(tile_right_1_ahead, direction))
     ? wall_right_1 // TODO
     : null;
-
-  $: door_0 = ((tile[direction].includes('door')))
-    ? middle_door
-    : null;
   
-  $: left_1 = ((tile_1_ahead?.[rotateLeft(direction)].includes('wall')))
+  $: left_1 = (isWallLike(tile_left_1_ahead, rotateLeft(direction)))
     ? hall_left_1
-    : ((tile_left_1_ahead?.[direction].includes('wall')))
+    : (isWallLike(tile_left_2_ahead, direction))
     ? null // TODO
     : null;
 
-  $: center_1 = ((tile_1_ahead?.[direction].includes('wall')))
+  $: center_1 = (isWallLike(tile_2_ahead, direction))
     ? null // TODO
     : null;
   
-  $: right_1 = ((tile_1_ahead?.[rotateRight(direction)].includes('wall')))
+  $: right_1 = (isWallLike(tile_right_1_ahead, rotateRight(direction)))
     ? hall_right_1
-    : ((tile_right_1_ahead?.[direction].includes('wall')))
+    : (isWallLike(tile_right_2_ahead, direction))
     ? null // TODO
     : null;
   
-  $: left_2 = ((tile_2_ahead?.[rotateLeft(direction)].includes('wall')))
+  $: left_2 = (isWallLike(tile_left_2_ahead, rotateLeft(direction)))
     ? hall_left_2
-    : ((tile_left_2_ahead?.[direction].includes('wall')))
+    : (isWallLike(tile_left_3_ahead, direction))
     ? null // TODO
     : null;
   
-  $: center_2 = ((tile_2_ahead?.[rotateLeft(direction)].includes('wall')))
+  $: center_2 = (isWallLike(tile_3_ahead, direction))
     ? null // TODO
     : null;
   
-  $: right_2 = ((tile_2_ahead?.[rotateRight(direction)].includes('wall')))
+  $: right_2 = (isWallLike(tile_right_2_ahead, rotateRight(direction)))
     ? hall_right_2
-    : ((tile_left_2_ahead?.[direction].includes('wall')))
+    : (isWallLike(tile_right_3_ahead, direction))
     ? null // TODO
     : null;
 
-  $: left_3 = ((tile_3_ahead?.[rotateLeft(direction)].includes('wall')))
+  $: left_3 = (isWallLike(tile_left_3_ahead, rotateLeft(direction)))
     ? hall_left_3
-    // : ((tile_left_3_ahead[direction].includes('wall')))
-    // ? null // TODO
-    : null;
-  
-  $: center_3 = ((tile_3_ahead?.[direction].includes('wall')))
+    : false // TODO (isWallLike(tile_left_4_ahead, direction))
     ? null // TODO
     : null;
   
-  $: right_3 = ((tile_3_ahead?.[rotateRight(direction)].includes('wall')))
+  $: center_3 = (isWallLike(tile_3_ahead, direction))
+    ? null // TODO
+    : null;
+  
+  $: right_3 = (isWallLike(tile_right_3_ahead, rotateRight(direction)))
     ? hall_right_3
-    // : ((tile_left_3_ahead[direction].includes('wall')))
-    // ? null // TODO
+    : false // TODO (isWallLike(tile_right_4_ahead, direction))
+    ? null // TODO
     : null;
 
   let unitImage;
@@ -131,7 +129,6 @@
   <img class="tile" src={left_0 || ""} />
   <img class="tile" src={center_0 || ""} />
   <img class="tile" src={right_0 || ""} />
-  <img class="tile" src={door_0 || ""} />
   <img class="unit" src={unitImage || ""} />
   <ControlsView {navigate} />
 </div>

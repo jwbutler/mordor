@@ -10,15 +10,17 @@
   import type { Player } from './types/player';
   import type { Unit } from './types/units';
   import { fight } from './utils/combat';
-  import { navigate } from './utils/geometry';
+  import { move, navigate } from './utils/geometry';
   import { onMount, onDestroy } from 'svelte';
+  import { getTile } from './utils/levels';
+  import { isDoorFacingDirection, isWall } from './utils/tiles';
 
   const level: Level = createFirstLevel();
   const playerUnit: Unit = createPlayerUnit();
   
   const player: Player = {
     unit: playerUnit,
-    coordinates: { x: 0, y: 0 },
+    coordinates: level.startingPoint,
     direction: 'east'
   };
   
@@ -74,7 +76,8 @@
       relativeDirection
     });
 
-    if (!tile[direction].includes('wall') || tile[direction].includes('door')) {
+    const nextTile = getTile(level, coordinates);
+    if (!isWall(nextTile) || isDoorFacingDirection(nextTile, direction)) {
       player.coordinates = coordinates;
     }
     player.direction = direction;

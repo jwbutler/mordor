@@ -1,5 +1,5 @@
 import type { Level } from '../types/levels';
-import { TileBuilder } from '../types/tiles';
+import type { Tile } from '../types/tiles';
 import { createKobold } from './units';
 
 // +-----+
@@ -9,26 +9,39 @@ import { createKobold } from './units';
 // +D----+
 // |     |
 // +-----+
+
+const floor = (): Tile => ({ type: 'floor', enemies: [], objects: [] });
+const wall = (): Tile => ({ type: 'wall', enemies: [], objects: [] });
+const horizontalDoor = (): Tile => ({ type: 'door_horizontal', enemies: [], objects: [] });
+
 const createFirstLevel = (): Level => {
   return {
     tiles: [
+      [wall(), wall(), wall(), wall(), wall(), wall(), wall()],
       [
-        new TileBuilder().north('wall').south('wall').west('wall').build(),
-        new TileBuilder().north('wall').south('wall').build(),
-        new TileBuilder().north('wall').east('wall').build()
+        wall(),
+        floor(),
+        floor(),
+        floor(),
+        floor(),
+        floor(),
+        wall(),
       ],
+      [wall(), wall(), wall(), wall(), wall(), floor(), wall()],
       [
-        new TileBuilder().north('wall').south('wall', 'door').west('wall').enemies(createKobold()).build(),
-        new TileBuilder().north('wall').south('wall').build(),
-        new TileBuilder().south('wall').east('wall').build()
+        wall(),
+        { type: 'floor', enemies: [createKobold()], objects: [] },
+        floor(),
+        floor(),
+        floor(),
+        floor(),
+        wall(),
       ],
-      [
-        new TileBuilder().north('wall', 'door').south('wall').west('wall').build(),
-        new TileBuilder().north('wall').south('wall').build(),
-        new TileBuilder().north('wall').south('wall').east('wall').build()
-      ]
+      [wall(), horizontalDoor(), wall(), wall(), wall(), wall(), wall()],
+      [wall(), floor(), floor(), floor(), floor(), floor(), wall()],
+      [wall(), wall(), wall(), wall(), wall(), wall(), wall()],
     ],
-    startingPoint: { x: 0, y: 0 }
+    startingPoint: { x: 1, y: 1 }
   };
 };
 

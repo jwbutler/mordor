@@ -1,26 +1,17 @@
 <script type="ts">
-  import { CompassDirection, compassDirectionValues } from '../types/geometry';
+  import { CompassDirection } from '../types/geometry';
   import type { Level } from '../types/levels';
   import type { Tile } from '../types/tiles';
-  import { titleCase } from '../utils/strings';
 
   export let level: Level;
   export let currentTile: Tile;
   export let direction: CompassDirection;
 
   const tileClass = (tile: Tile, currentTile: Tile, currentDirection: CompassDirection): string => {
-    const classNames: string[] = ['tile'];
+    const classNames: string[] = ['tile', tile.type];
     if (tile === currentTile) {
       classNames.push('current');
       classNames.push(`${currentDirection}Arrow`);
-    }
-    for (const direction of compassDirectionValues) {
-      if (tile[direction].includes('wall')) {
-        classNames.push(`wall${titleCase(direction)}`);
-      }
-      if (tile[direction].includes('door')) {
-        classNames.push(`door${titleCase(direction)}`);
-      }
     }
     return classNames.join(' ');
   };
@@ -31,7 +22,8 @@
     {#each level.tiles as row}
       <div class="row">
         {#each row as tile}
-          <div class={tileClass(tile, currentTile, direction)}></div>
+          <div
+            class={tileClass(tile, currentTile, direction)}></div>
         {/each}
       </div>
     {/each}
@@ -72,43 +64,23 @@
     align-items: center;
     justify-content: center;
     flex-basis: 100%;
-    height: 80px;
+    height: 40px;
   }
 
-  .current {
+  .tile.current {
     background-color: #f0f0e0;
   }
 
-  .wallNorth {
-    border-top-width: var(--borderWidth);
+  .floor {
+    background-color: lightgray;
   }
 
-  .wallSouth {
-    border-bottom-width: var(--borderWidth);
+  .wall {
+    background-color: darkgray;
   }
 
-  .wallEast {
-    border-right-width: var(--borderWidth);
-  }
-
-  .wallWest {
-    border-left-width: var(--borderWidth);
-  }
-
-  .doorNorth {
-    border-top-color: var(--doorColor);
-  }
-
-  .doorSouth {
-    border-bottom-color: var(--doorColor);
-  }
-
-  .doorEast {
-    border-right-color: var(--doorColor);
-  }
-
-  .doorWest {
-    border-left-color: var(--doorColor);
+  .door_horizontal,.door_vertical {
+    background-color: brown;
   }
 
   .northArrow::after {
