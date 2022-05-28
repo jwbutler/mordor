@@ -3,7 +3,8 @@ import rimraf from 'rimraf';
 const { createCanvas, ImageData, loadImage } = _canvas;
 import { mkdirSync, readdirSync, writeFileSync } from 'fs';
 import imageMin from 'imagemin';
-import imageminPngQuant from 'imagemin-pngquant';
+import pngquantPlugin from 'imagemin-pngquant';
+import optipngPlugin from 'imagemin-optipng';
 
 const removeWhite = (imageData: ImageData): ImageData => {
   const array = new Uint8ClampedArray(imageData.data.length);
@@ -24,8 +25,8 @@ const removeWhite = (imageData: ImageData): ImageData => {
   return new ImageData(array, imageData.width, imageData.height);
 };
 
-const bmpDir = 'bmp';
-const tmpDir = 'tmp/bmp';
+const bmpDir = 'images';
+const tmpDir = 'tmp/images';
 const outDir = 'src/assets/gen';
 
 const main = async () => {
@@ -50,7 +51,7 @@ const main = async () => {
 
   await imageMin([`${tmpDir}/*`], {
     destination: outDir,
-    plugins: [imageminPngQuant()]
+    plugins: [optipngPlugin(), pngquantPlugin()]
   });
   
   for (const filename of readdirSync(outDir)) {

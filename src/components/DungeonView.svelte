@@ -14,7 +14,7 @@
   import wall_center_1 from '../assets/gen/wall_center_1.png';
   import wall_left_1 from '../assets/gen/wall_left_1.png';
   import wall_right_1 from '../assets/gen/wall_right_1.png';
-  import floor_ceiling from '../assets/floor_ceiling.png';
+  import floor_ceiling from '../assets/gen/floor_ceiling.png';
   import { move, rotateLeft, rotateRight } from '../utils/geometry';
   import { getTile } from '../utils/levels';
   import { isDoorFacingDirection, isWall, isWallLike } from '../utils/tiles';
