@@ -30,14 +30,18 @@
     tile = tile;
   };
   
+  let enableInput = true;
+  
   const loadTile = async () => {
     if (tile.enemies.length > 0) {
+      enableInput = false;
       await fight(
         player.unit,
         tile.enemies[0],
         message => { messages = [...messages, message]; },
         render
       );
+      enableInput = true;
     }
   };
   
@@ -63,6 +67,9 @@
   };
 
   const handleKeyDown = async (e: KeyboardEvent) => {
+    if (!enableInput) {
+      return;
+    }
     const relativeDirection = _getRelativeDirection(e);
     if (relativeDirection) {
       await handleNavigate(relativeDirection);
