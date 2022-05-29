@@ -1,9 +1,9 @@
 <script lang="ts">
   import DungeonView from './components/DungeonView.svelte';
   import MapView from './components/MapView.svelte';
-  import MessageView from "./components/MessageView.svelte";
+  import MessageView from './components/MessageView.svelte';
   import UnitView from './components/UnitView.svelte';
-  import { createFirstLevel } from './database/levels';
+  import { biggerLevel, createFirstLevel } from './database/levels';
   import { createPlayerUnit } from './database/units';
   import type { RelativeDirection } from './types/geometry';
   import type { Level } from './types/levels';
@@ -13,10 +13,10 @@
   import { move, navigate } from './utils/geometry';
   import { onMount, onDestroy } from 'svelte';
   import { getTile } from './utils/levels';
-  import { sleep } from './utils/promises';
   import { isDoorFacingDirection, isWallLike } from './utils/tiles';
 
-  const level: Level = createFirstLevel();
+  //const level: Level = createFirstLevel();
+  const level: Level = biggerLevel();
   const playerUnit: Unit = createPlayerUnit();
   
   const player: Player = {
