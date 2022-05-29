@@ -1,10 +1,12 @@
 <script type="ts">
+  import { onMount } from 'svelte';
   import { getDungeonImages } from '../database/dungeonImages';
   import { Coordinates, RelativeDirection } from '../types/geometry';
   import type { CompassDirection } from '../types/geometry';
   import type { Level } from '../types/levels';
   import type { Tile } from '../types/tiles';
   import { rotateLeft, rotateRight } from '../utils/geometry';
+  import { createImage } from '../utils/images';
   import { getTile, getTilesInView } from '../utils/levels';
   import { isDoor, isDoorFacingDirection, isWall, isWallLike } from '../utils/tiles';
   import ControlsView from './ControlsView.svelte';
@@ -20,6 +22,7 @@
   $: tiles = getTilesInView(level, coordinates, direction, maxDepth);
   
   type RenderState = {
+    floorCeiling,
     left: (string | null)[],
     center: (string | null)[],
     right: (string | null)[],
@@ -39,6 +42,7 @@
  
   const getRenderState = (): RenderState => {
     const images: RenderState = {
+      floorCeiling,
       left: [],
       center: [],
       right: [],
@@ -47,7 +51,7 @@
     };
     
     for (let i = 0; i < maxDepth; i++) {
-      const left = (isWallLike(tiles['left'][i], rotateLeft(direction)))
+      const left = (isWallLike(tiles['left'][i], rotateLeft(direction)) || isDoor(tiles['left'][i]))
         ? hallsLeft[i]
         : (isWallLike(tiles['left'][i + 1], direction))
         ? wallsLeft[i]
@@ -59,7 +63,7 @@
         : null;
       images['center'].push(center);
       
-      const right = (isWallLike(tiles['right'][i], rotateRight(direction)))
+      const right = (isWallLike(tiles['right'][i], rotateRight(direction)) || isDoor(tiles['right'][i]))
         ? hallsRight[i]
         : (isWallLike(tiles['right'][i + 1], direction))
         ? wallsRight[i]
@@ -69,6 +73,7 @@
       const door = (isDoorFacingDirection(tiles['center'][i + 1], direction))
         ? doors[i]
         : null;
+      images['doors'].push(door);
     }
   
     const tile = getTile(level, coordinates);
@@ -80,50 +85,69 @@
     return images;
   };
   
-  let images: RenderState;
+  let canvasElement: HTMLCanvasElement;
+  let bufferElement: HTMLCanvasElement;
+  
+  const drawImage = async (src: string, context: CanvasRenderingContext2D) => {
+    const imageData = await createImage(src);
+    context.putImageData(imageData, 0, 0);
+  };
+  
+  const render = async (images: RenderState) => {
+    if (!bufferElement || !canvasElement) {
+      return;
+    }
+    const bufferContext = bufferElement?.getContext('2d');
+    bufferContext.fillStyle = 'black';
+    await drawImage(images.floorCeiling, bufferContext);
+    for (let i = 3; i >= 0; i--) {
+      for (const category of ['left', 'center', 'right', 'doors']) {
+        const image = images[category]?.[i];
+        if (image) {
+          await drawImage(image, bufferContext);
+        }
+      }
+    }
+    if (images.unit !== null) {
+      await drawImage(images.unit, bufferContext);
+    }
+    const imageData = bufferContext.getImageData(0, 0, bufferElement.width, bufferElement.height);
+    canvasElement.getContext('2d').putImageData(imageData, 0, 0);
+  };
+  
   $: {
-    images = getRenderState();
+    const images = getRenderState();
+    render(images);
     tile; //dependency
   }
-  $: console.log(JSON.stringify(images, null, 2));
+  
+  onMount(() => {
+    const images = getRenderState();
+    render(images);
+  });
+
 </script>
 
-<div class="dungeon">
-  <img class="unit" alt="" src={floorCeiling} />
-  {#each [3,2,1,0] as i}
-    {#each ['left', 'center', 'right', 'door'] as category}
-      <img class="tile" alt="" src={images[category]?.[i]} />
-    {/each}
-  {/each}
-  <img class="unit"  alt="" src={images['unit']} />
+<div class="container">
+  <canvas class="dungeon" bind:this={canvasElement} width={640} height={480}>
+  </canvas>
   <ControlsView {navigate} />
 </div>
+<canvas class="buffer" bind:this={bufferElement} width={640} height={480}></canvas>
 
 <style>
-  .dungeon {
+  .container {
     position: relative;
+  }
+  .dungeon {
     width: var(--dungeonWidth);
     height: var(--dungeonHeight);
     border: 1px solid black;
   }
 
-  img {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    image-rendering: crisp-edges; /* Firefox */
-    image-rendering: pixelated;   /* Chrome */
-  }
-  img[src=""] {
+  .buffer {
     display: none;
   }
-  .tile {
-    border: 1px solid black;
-  }
-  
-  .unit {}
   
   @media (max-width: 767px) {
     .dungeon {

@@ -103,6 +103,7 @@
     .container {
       height: 100%;
       flex-basis: 50%;
+      padding: 0;
     }
     .tile {
       height: 100%;

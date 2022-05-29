@@ -15,8 +15,8 @@
   import { getTile } from './utils/levels';
   import { isDoorFacingDirection, isWallLike } from './utils/tiles';
 
-  //const level: Level = createFirstLevel();
-  const level: Level = biggerLevel();
+  const level: Level = createFirstLevel();
+  // const level: Level = biggerLevel();
   const playerUnit: Unit = createPlayerUnit();
   
   const player: Player = {
@@ -98,6 +98,12 @@
   
   onMount(() => window.addEventListener('keydown', handleKeyDown));
   onDestroy(() => window.removeEventListener('keydown', handleKeyDown));
+  onMount(() => {
+    const errorLog = console.error;
+    console.error = (x) => { alert(`Error: ${x}`); errorLog(x); };
+    const warnLog = console.warn;
+    console.warn = (x) => { alert(`Warning: ${x}`); errorLog(x); };
+  });
 </script>
 
 <main>
