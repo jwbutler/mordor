@@ -46,6 +46,7 @@
     width: 37.5%;
     height: 37.5%;
     user-select: none;
+    touch-action: manipulation;
   }
   
   .arrow:hover {

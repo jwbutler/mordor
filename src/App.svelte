@@ -3,7 +3,7 @@
   import MapView from './components/MapView.svelte';
   import MessageView from './components/MessageView.svelte';
   import UnitView from './components/UnitView.svelte';
-  import { biggerLevel, createFirstLevel } from './database/levels';
+  import { createFirstLevel } from './database/levels';
   import { createPlayerUnit } from './database/units';
   import type { RelativeDirection } from './types/geometry';
   import type { Level } from './types/levels';
@@ -69,9 +69,6 @@
   };
 
   const handleKeyDown = async (e: KeyboardEvent) => {
-    if (!enableInput) {
-      return;
-    }
     const relativeDirection = _getRelativeDirection(e);
     if (relativeDirection) {
       await handleNavigate(relativeDirection);
@@ -79,6 +76,9 @@
   };
   
   const handleNavigate = async (relativeDirection: RelativeDirection) => {
+    if (!enableInput) {
+      return;
+    }
     const { coordinates, direction } = navigate({
       coordinates: player.coordinates,
       compassDirection: player.direction,
