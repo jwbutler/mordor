@@ -31,7 +31,9 @@ const fromString = (data: string, startingPoint: Coordinates): Level => {
         default:  return floor();
       }
     });
-    tiles.push(row);
+    if (row.length > 0) {
+      tiles.push(row);
+    }
   }
 
   return {
@@ -41,36 +43,16 @@ const fromString = (data: string, startingPoint: Coordinates): Level => {
 };
 
 const createFirstLevel = (): Level => {
-  return {
-    tiles: [
-      [wall(), wall(), wall(), wall(), wall(), wall(), wall(), wall()],
-      [
-        wall(),
-        floor(),
-        floor(),
-        floor(),
-        floor(),
-        floor(),
-        floor(),
-        wall(),
-      ],
-      [wall(), wall(), wall(), wall(), wall(), floor(), floor(), wall()],
-      [
-        wall(),
-        floor(),
-        { type: 'floor', enemies: [createKobold()], objects: [] },
-        floor(),
-        floor(),
-        floor(),
-        floor(),
-        wall(),
-      ],
-      [wall(), verticalDoor(), wall(), wall(), wall(), wall(), wall(), wall()],
-      [wall(), floor(), floor(), floor(), floor(), floor(), floor(), wall()],
-      [wall(), wall(), wall(), wall(), wall(), wall(), wall(), wall()],
-    ],
-    startingPoint: { x: 1, y: 1 }
-  };
+  const data = `
+    #######
+    #     #
+    ##### #
+    #K    #
+    #-#####
+    #     #
+    #######
+  `;
+  return fromString(data, { x: 1, y: 1 });
 };
 
 const biggerLevel = () => {

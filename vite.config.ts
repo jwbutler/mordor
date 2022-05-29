@@ -6,5 +6,6 @@ export default defineConfig({
   build: {
     assetsInlineLimit: 0
   },
-  plugins: [svelte()]
+  plugins: [svelte()],
+  clearScreen: false
 })

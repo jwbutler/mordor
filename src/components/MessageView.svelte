@@ -34,4 +34,10 @@
     height: 72px;
     resize: none;
   }
+  
+  @media (max-width: 767px) {
+    textarea {
+      height: 48px;
+    }
+  }
 </style>
