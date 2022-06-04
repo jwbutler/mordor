@@ -1,13 +1,14 @@
 <script lang="ts">
+  import CombatView from './components/CombatView.svelte';
   import DungeonView from './components/DungeonView.svelte';
   import MapView from './components/MapView.svelte';
   import MessageView from './components/MessageView.svelte';
   import UnitView from './components/UnitView.svelte';
+  import { startCombat } from './lib/combat';
   import type { RelativeDirection } from './lib/geometry';
   import { state } from './stores/state';
   import type { Level } from './lib/levels';
   import type { Player } from './lib/player';
-  import { fight } from './lib/combat';
   import { move, navigate } from './lib/geometry';
   import { onMount, onDestroy } from 'svelte';
   import { getRelativeDirection } from './lib/input';
@@ -26,14 +27,9 @@
   };
   
   const loadTile = async () => {
-    if (tile.enemies.length > 0) {
+    if (tile.enemies.length > 0 && tile.enemies[0].life >= 0) {
       $state.enableInput = false;
-      await fight(
-        player.unit,
-        tile.enemies[0],
-        message => { $state.messages = [...$state.messages, message]; },
-        render
-      );
+      await startCombat(tile.enemies[0]);
       $state.enableInput = true;
     }
   };
@@ -68,12 +64,6 @@
   
   onMount(() => window.addEventListener('keydown', handleKeyDown));
   onDestroy(() => window.removeEventListener('keydown', handleKeyDown));
-  onMount(() => {
-    const errorLog = console.error;
-    console.error = (x) => { alert(`Error: ${x}`); errorLog(x); };
-    const warnLog = console.warn;
-    console.warn = (x) => { alert(`Warning: ${x}`); errorLog(x); };
-  });
 </script>
 
 <main>
@@ -91,11 +81,20 @@
       />
       <MessageView messages={$state.messages} />
     </div>
-    <MapView
-      level={level}
-      currentTile={tile}
-      direction={player.direction}
-    />
+    {#if $state.combat !== null}
+      <CombatView
+        state={$state.combat}
+        sendMessage={message => { $state.messages = [...$state.messages, message]; }}
+        {render}
+        endCombat={() => { $state.combat = null; } }
+      />
+    {:else}
+      <MapView
+        level={level}
+        currentTile={tile}
+        direction={player.direction}
+      />
+    {/if}
   </div>
 </main>
 

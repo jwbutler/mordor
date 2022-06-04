@@ -26,6 +26,8 @@ const shuffle = <T>(list: T[]) => {
     list[n] = list[i];
     list[i] = tmp;
   }
+  
+  return list;
 };
 
 const weightedRandom = <T>(
