@@ -37,7 +37,7 @@
   
   .container {
     width: 100%;
-    padding: 10%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -64,7 +64,6 @@
     align-items: center;
     justify-content: center;
     flex-basis: 100%;
-    height: 40px;
   }
 
   .tile.current {

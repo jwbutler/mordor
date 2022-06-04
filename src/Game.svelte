@@ -67,11 +67,11 @@
 </script>
 
 <main>
-  <div class="left">
+  <div class="column left">
     <UnitView unit={player.unit} />
   </div>
-  <div class="middle">
-    <div class="middleTop">
+  <div class="column middle">
+    <div class="cell">
       <DungeonView
         {tile}
         level={level}
@@ -81,20 +81,25 @@
       />
       <MessageView messages={$state.messages} />
     </div>
-    {#if $state.combat !== null}
-      <CombatView
-        state={$state.combat}
-        sendMessage={message => { $state.messages = [...$state.messages, message]; }}
-        {render}
-        endCombat={() => { $state.combat = null; } }
-      />
-    {:else}
-      <MapView
-        level={level}
-        currentTile={tile}
-        direction={player.direction}
-      />
-    {/if}
+    <div class="cell">
+      {#if $state.combat !== null}
+        <CombatView
+          state={$state.combat}
+          sendMessage={message => { $state.messages = [...$state.messages, message]; }}
+          {render}
+          endCombat={() => { $state.combat = null; } }
+        />
+      {:else}
+        <MapView
+          level={level}
+          currentTile={tile}
+          direction={player.direction}
+        />
+      {/if}
+    </div>
+  </div>
+  <div class="column right">
+    <UnitView unit={player.unit} />
   </div>
 </main>
 
@@ -102,59 +107,56 @@
   main {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: stretch;
     gap: 20px;
-    margin: 10px;
+    padding: 10px;
+    width: 100%;
     height: 100%;
+  }
+
+  .column {
+    width: 100%;
+    height: 100%;
+    flex-basis: 100%;
+    display: flex;
+    flex-direction: column;
   }
   
   .middle {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
+    justify-content: stretch;
+    align-items: stretch;
+    gap: 10px;
+  }
+  
+  .left,.right {
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .cell {
+    flex-basis: 100%;
+    flex-shrink: 1;
+    width: 100%;
     height: 100%;
   }
-  
-  .middleTop {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
+
   @media (max-width: 767px) {
     main {
       align-items: center;
-      margin: 0;
       gap: 0;
     }
-    
+
     .left {
       display: none;
     }
-    
-    .middle {
-      width: 100%;
-      gap: 0;
-    }
-    
-    .middleTop {
-      flex-basis: 60%;
-    }
-    
-    @media (orientation: portrait) {
-      .middle {
-        flex-direction: column;
-      }
+
+    .right {
+      display: none;
     }
     
     @media (orientation: landscape) {
       .middle {
         flex-direction: row;
-      }
-      .middleTop {
-        height: 100%;
       }
     }
   }
