@@ -3,16 +3,16 @@
   import MapView from './components/MapView.svelte';
   import MessageView from './components/MessageView.svelte';
   import UnitView from './components/UnitView.svelte';
-  import type { RelativeDirection } from './types/geometry';
+  import type { RelativeDirection } from './lib/geometry';
   import { state } from './stores/state';
-  import type { Level } from './types/levels';
-  import type { Player } from './types/player';
-  import { fight } from './utils/combat';
-  import { move, navigate } from './utils/geometry';
+  import type { Level } from './lib/levels';
+  import type { Player } from './lib/player';
+  import { fight } from './lib/combat';
+  import { move, navigate } from './lib/geometry';
   import { onMount, onDestroy } from 'svelte';
-  import { getRelativeDirection } from './utils/input';
-  import { getTile } from './utils/levels';
-  import { isDoorFacingDirection, isWallLike } from './utils/tiles';
+  import { getRelativeDirection } from './lib/input';
+  import { getTile } from './lib/levels';
+  import { isDoorFacingDirection, isWallLike } from './lib/tiles';
   
   let tile = $state.level.tiles[$state.player.coordinates.y][$state.player.coordinates.x];
   let player: Player;

@@ -1,4 +1,4 @@
-import type { RelativeDirection } from '../types/geometry';
+import type { RelativeDirection } from './geometry';
 
 const getRelativeDirection = (e: KeyboardEvent): RelativeDirection | null => {
   switch (e.code) {

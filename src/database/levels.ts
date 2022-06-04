@@ -1,6 +1,6 @@
-import type { Coordinates } from '../types/geometry';
-import type { Level } from '../types/levels';
-import type { Tile } from '../types/tiles';
+import type { Coordinates } from '../lib/geometry';
+import type { Level } from '../lib/levels';
+import type { Tile } from '../lib/tiles';
 import { createKobold } from './units';
 
 // +-----+

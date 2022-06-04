@@ -1,5 +1,5 @@
 <script type="ts">
-  import type { RelativeDirection } from '../types/geometry';
+  import type { RelativeDirection } from '../lib/geometry';
 
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
 </script>

@@ -3,9 +3,9 @@
   import { createPlayerUnit } from './database/units';
   import Game from './Game.svelte';
   import { initialize as initializeState } from './stores/state';
-  import type { Level } from './types/levels';
-  import type { Player } from './types/player';
-  import type { Unit } from './types/units';
+  import type { Level } from './lib/levels';
+  import type { Player } from './lib/player';
+  import type { Unit } from './lib/units';
 
   const level: Level = createFirstLevel();
   // const _level: Level = biggerLevel();

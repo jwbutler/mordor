@@ -1,7 +1,7 @@
 <script type="ts">
-  import { CompassDirection } from '../types/geometry';
-  import type { Level } from '../types/levels';
-  import type { Tile } from '../types/tiles';
+  import { CompassDirection } from '../lib/geometry';
+  import type { Level } from '../lib/levels';
+  import type { Tile } from '../lib/tiles';
 
   export let level: Level;
   export let currentTile: Tile;

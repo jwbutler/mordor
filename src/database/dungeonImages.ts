@@ -1,4 +1,3 @@
-
 import floor_ceiling from '../assets/gen/floor_ceiling.png';
 import hall_left_0 from '../assets/gen/hall_left_0.png';
 import hall_left_1 from '../assets/gen/hall_left_1.png';

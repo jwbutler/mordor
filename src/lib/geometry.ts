@@ -1,4 +1,11 @@
-import type { Coordinates, CompassDirection, RelativeDirection } from '../types/geometry';
+type CompassDirection = 'north' | 'south' | 'east' | 'west';
+const compassDirectionValues = ['north', 'south', 'east', 'west'];
+
+
+type RelativeDirection = 'forward' | 'backward' | 'left' | 'right';
+const relativeDirectionValues = ['forward', 'backward', 'left', 'right'];
+
+type Coordinates = { x: number, y: number };
 
 const rotateRight = (direction: CompassDirection): CompassDirection => ({
   'north': 'east',
@@ -58,12 +65,19 @@ const navigate = ({ coordinates, compassDirection, relativeDirection }: Navigate
   };
 };
 
+export type {
+  Coordinates,
+  CompassDirection,
+  NavigateResult,
+  RelativeDirection
+};
+
 export {
+  compassDirectionValues,
   move,
   navigate,
+  relativeDirectionValues,
   rotate180,
   rotateLeft,
   rotateRight
 };
-
-export type { NavigateResult };

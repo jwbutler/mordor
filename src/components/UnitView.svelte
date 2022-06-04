@@ -1,10 +1,10 @@
 <script type="ts">
-  import {equipmentSlotToString, equipmentSlotValues} from '../types/items';
-  import type { Stats } from '../types/stats';
-  import { statValues } from '../types/stats';
-  import type { Unit } from '../types/units';
-  import { getModifiedStats } from '../utils/stats';
-  import { titleCase } from '../utils/strings';
+  import {equipmentSlotToString, equipmentSlotValues} from '../lib/items';
+  import type { Stats } from '../lib/stats';
+  import { statValues } from '../lib/stats';
+  import type { Unit } from '../lib/units';
+  import { getModifiedStats } from '../lib/stats';
+  import { titleCase } from '../lib/strings';
 
   export let unit: Unit;
   let modifiedStats: Stats;

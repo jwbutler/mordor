@@ -1,5 +1,14 @@
-import type { CompassDirection } from '../types/geometry';
-import type { Tile } from '../types/tiles';
+import type { CompassDirection } from './geometry';
+import type { MapObject } from './objects';
+import type { Unit } from './units';
+
+type TileType = 'floor' | 'wall' | 'door_horizontal' | 'door_vertical';
+
+type Tile = {
+  type: TileType,
+  enemies: Unit[],
+  objects: MapObject[]
+};
 
 const isWall = (tile: Tile | null) => tile?.type === 'wall';
 const isDoor = (tile: Tile | null) => ['door_horizontal', 'door_vertical'].includes(tile?.type || 'nope');
@@ -22,6 +31,8 @@ const isDoorFacingDirection = (tile: Tile | null, direction: CompassDirection): 
       return tile?.type === 'door_horizontal';
   }
 };
+
+export type { Tile };
 
 export {
   isDoor,

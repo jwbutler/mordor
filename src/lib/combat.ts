@@ -1,4 +1,4 @@
-import type { Unit } from '../types/units';
+import type { Unit } from './units';
 import { sleep } from './promises';
 import { randChoice } from './random';
 import { getAttackDamage, getDodgeChance, getHitChance, getMitigatedDamage } from './stats';

@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
-import type { Level } from '../types/levels';
-import type { Player } from '../types/player';
+import type { Level } from '../lib/levels';
+import type { Player } from '../lib/player';
 
 type GameState = {
   level: Level,
