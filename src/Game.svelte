@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { createCombatHandler } from './classes/CombatHandler';
   import CombatView from './components/CombatView.svelte';
   import DungeonView from './components/DungeonView.svelte';
   import MapView from './components/MapView.svelte';
   import MessageView from './components/MessageView.svelte';
   import UnitView from './components/UnitView.svelte';
-  import { startCombat } from './lib/combat';
   import type { RelativeDirection } from './lib/geometry';
   import { state } from './stores/state';
   import type { Level } from './lib/levels';
@@ -26,10 +26,17 @@
     tile = tile;
   };
   
+  const sendMessage = message => {
+    console.log(message);
+    $state.messages = [...$state.messages, message];
+  };
+
+  const combatHandler = createCombatHandler({ sendMessage, render });
+  
   const loadTile = async () => {
-    if (tile.enemies.length > 0 && tile.enemies[0].life >= 0) {
+    if (tile.enemies.length > 0 && tile.enemies[0].life > 0) {
       $state.enableInput = false;
-      await startCombat(tile.enemies[0]);
+      await combatHandler.startCombat(tile.enemies[0], $state);
       $state.enableInput = true;
     }
   };
@@ -61,7 +68,7 @@
     tile = level.tiles[player.coordinates.y][player.coordinates.x];
     await loadTile();
   };
-  
+
   onMount(() => window.addEventListener('keydown', handleKeyDown));
   onDestroy(() => window.removeEventListener('keydown', handleKeyDown));
 </script>
@@ -82,13 +89,8 @@
       <MessageView messages={$state.messages} />
     </div>
     <div class="cell">
-      {#if $state.combat !== null}
-        <CombatView
-          state={$state.combat}
-          sendMessage={message => { $state.messages = [...$state.messages, message]; }}
-          {render}
-          endCombat={() => { $state.combat = null; } }
-        />
+      {#if $state.inCombat}
+        <CombatView handler={combatHandler} />
       {:else}
         <MapView
           level={level}
@@ -99,7 +101,7 @@
     </div>
   </div>
   <div class="column right">
-    <UnitView unit={player.unit} />
+    <pre>{JSON.stringify($state,null,2)}</pre>
   </div>
 </main>
 
@@ -138,6 +140,15 @@
     flex-shrink: 1;
     width: 100%;
     height: 100%;
+  }
+  
+  pre {
+    font-family: monospace;
+    user-select: none;
+    overflow: auto;
+    width: 100%;
+    background-color: #f0f0f0;
+    border: 1px solid black;
   }
 
   @media (max-width: 767px) {

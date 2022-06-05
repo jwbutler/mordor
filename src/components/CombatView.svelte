@@ -1,18 +1,21 @@
 <script type="ts">
-  import { playTurn } from '../lib/combat';
-  import type { CombatState } from '../stores/state';
+  import type { CombatHandler } from '../classes/CombatHandler';
+  import { state } from '../stores/state';
 
-  export let state: CombatState;
-  export let sendMessage: (message: string) => void;
-  export let render: () => Promise<void>;
-  export let endCombat: () => void;
+  export let handler: CombatHandler;
 </script>
 
 <div class="combat">
-  <div>{state.attacker.name}</div>
-  <div>{state.defender.name}</div>
-  <button on:click={() => playTurn({ state, sendMessage, render, endCombat })}>
-    fight
+  <div>{handler.getAttacker().name}</div>
+  <div>{handler.getDefender().name}</div>
+  <button on:click={async () => {
+    if ($state.enableInput) {
+      $state.enableInput = false;
+      await handler.playTurnPair($state);
+      $state.enableInput = true;
+    }
+  }}>
+    Fight!
   </button>
 </div>
 
@@ -23,5 +26,13 @@
     border: 1px solid black;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .combat > * {
+    width: 40%;
+    text-align: center;
   }
 </style>

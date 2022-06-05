@@ -41,11 +41,13 @@
     border-collapse: collapse;
     width: 100%;
     height: 100%;
+    border: 1px solid black;
   }
   
   td {
     border: 1px solid black;
     padding: 5px;
+    text-align: center;
   }
   
   td:first-child {

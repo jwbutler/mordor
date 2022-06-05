@@ -31,10 +31,6 @@
 </div>
 
 <style>
-  :root {
-    --doorColor: #ff00ff;
-  }
-  
   .container {
     width: 100%;
     height: 100%;
@@ -49,6 +45,9 @@
     width: 100%;
     height: 100%;
     align-items: stretch;
+    border: 1px solid black;
+    border-radius: 10px;
+    overflow: hidden;
   }
 
   .row {

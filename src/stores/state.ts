@@ -1,42 +1,37 @@
-import { writable } from 'svelte/store';
+import { Readable, writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 import type { Level } from '../lib/levels';
 import type { Player } from '../lib/player';
-import type { Unit } from '../lib/units';
 
 type GameState = {
   level: Level,
   player: Player,
   enableInput: boolean,
   messages: string[],
-  combat: CombatState | null
+  inCombat: boolean
 };
 
-type CombatState = {
-  attacker: Unit,
-  defender: Unit
-};
-
-type InitState = {
+type InitialState = {
   level: Level,
   player: Player
 };
 
-const state: Writable<GameState> = writable<GameState>();
+const state = writable<GameState>();
 
-const initialize = ({ level, player }: InitState) => {
+const get = <T> (store: Readable<T>): Promise<T> => new Promise(store.subscribe);
+
+const initialize = ({ level, player }: InitialState) => {
   state.set({
     level,
     player,
     enableInput: true,
     messages: [],
-    combat: null
+    inCombat: false
   });
 };
 
 export {
   initialize,
   state,
-  type CombatState,
   type GameState
 };
