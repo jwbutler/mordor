@@ -81,6 +81,7 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
         const mitigatedDamage = getMitigatedDamage(defender, attackDamage);
         state.messages.push(`${attacker.name} hit ${defender.name} for ${mitigatedDamage}!`);
         takeDamage(defender, mitigatedDamage);
+        stateStore.set({ ... state });
         if (defender.life <= 0) {
           await sleep(shortSleepMillis);
           state.messages.push(`${defender.name} dies!`);

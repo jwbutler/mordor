@@ -49,7 +49,7 @@
   };
   
   const handleNavigate = async (relativeDirection: RelativeDirection) => {
-    if (!$state.enableInput) {
+    if (!$state.enableInput || $state.inCombat) {
       return;
     }
     const { coordinates, direction } = navigate({
@@ -149,6 +149,7 @@
     width: 100%;
     background-color: #f0f0f0;
     border: 1px solid black;
+    margin: 0;
   }
 
   @media (max-width: 767px) {

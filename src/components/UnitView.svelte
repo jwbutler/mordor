@@ -1,15 +1,16 @@
 <script type="ts">
   import {equipmentSlotToString, equipmentSlotValues} from '../lib/items';
   import type { Stats } from '../lib/stats';
-  import { statValues } from '../lib/stats';
+  import { getMaxLife, getMaxMana, statValues } from '../lib/stats';
   import type { Unit } from '../lib/units';
   import { getModifiedStats } from '../lib/stats';
   import { titleCase } from '../lib/strings';
+  import ResourceMeter from "./ResourceMeter.svelte";
 
   export let unit: Unit;
   let modifiedStats: Stats;
   modifiedStats = getModifiedStats(unit);
-  
+  $: console.log(`${unit.life} / ${getMaxLife(unit)}`);
 </script>
 
 <table class="unit">
@@ -20,6 +21,32 @@
   <tr>
     <td>Level</td>
     <td>{unit.level}</td>
+  </tr>
+  <tr>
+    <td>Life</td>
+    <td>
+      <div class="meter">
+        <ResourceMeter
+          type="life"
+          current={unit.life}
+          max={getMaxLife(unit)}
+        />
+      </div>
+      <div>{unit.life} / {getMaxLife(unit)}</div>
+    </td>
+  </tr>
+  <tr>
+    <td>Mana</td>
+    <td>
+      <div class="meter">
+        <ResourceMeter
+          type="mana"
+          current={unit.mana}
+          max={getMaxMana(unit)}
+        />
+      </div>
+      <div>{unit.mana} / {getMaxMana(unit)}</div>
+    </td>
   </tr>
   {#each statValues as stat}
     <tr>
@@ -52,6 +79,11 @@
   
   td:first-child {
     width: 40%;
+  }
+  
+  .meter {
+    width: 75%;
+    margin: 0 auto;
   }
   
 </style>

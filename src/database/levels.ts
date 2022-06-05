@@ -38,8 +38,8 @@ const createFirstLevel = (): Level => {
   const data = `
     #######
     #    K#
-    ##### #
-    #K    #
+    #####K#
+    #KKKKK#
     #-#####
     #     #
     #######

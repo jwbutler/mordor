@@ -3,20 +3,24 @@
   import { state } from '../stores/state';
 
   export let handler: CombatHandler;
-</script>
-
-<div class="combat">
-  <div>{handler.getAttacker().name}</div>
-  <div>{handler.getDefender().name}</div>
-  <button on:click={async () => {
+  
+  const attack = async () => {
     if ($state.enableInput) {
       $state.enableInput = false;
       await handler.playTurnPair($state);
       $state.enableInput = true;
     }
-  }}>
-    Fight!
-  </button>
+  };
+</script>
+
+<div class="combat">
+  {#if $state.enableInput}
+    <button on:click={attack}>
+      Attack
+    </button>
+    <button disabled>Item</button>
+    <button disabled>Run</button>
+  {/if}
 </div>
 
 <style>
@@ -28,11 +32,15 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    padding: 20px;
     gap: 20px;
   }
   
-  .combat > * {
-    width: 40%;
+  button {
+    width: 60%;
     text-align: center;
+    padding: 10px;
+    border: 1px solid #808080;
+    border-radius: 10px;
   }
 </style>

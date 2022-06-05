@@ -35,7 +35,7 @@ const zeroStats: Stats = {
 };
 
 const strengthToDamage = 1;
-const dexterityToHitChance = 0.01;
+const dexterityToHitChance = 0.05;
 const constitutionToLife = 10;
 const wisdomToMana = 10;
 
