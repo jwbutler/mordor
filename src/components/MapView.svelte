@@ -17,28 +17,18 @@
   };
 </script>
 
-<div class="container">
-  <div class="map">
-    {#each level.tiles as row}
-      <div class="row">
-        {#each row as tile}
-          <div
-            class={tileClass(tile, currentTile, direction)}></div>
-        {/each}
-      </div>
-    {/each}
-  </div>
+<div class="map">
+  {#each level.tiles as row}
+    <div class="row">
+      {#each row as tile}
+        <div
+          class={tileClass(tile, currentTile, direction)}></div>
+      {/each}
+    </div>
+  {/each}
 </div>
 
 <style>
-  .container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .map {
     display: flex;
     flex-direction: column;
@@ -98,10 +88,6 @@
   }
   
   @media (max-width: 767px) {
-    .container {
-      height: 100%;
-      padding: 0;
-    }
     .tile {
       height: 100%;
     }

@@ -70,9 +70,15 @@
   };
 
   let middleColumn: HTMLElement;
-  onMount(() => window.addEventListener('keydown', handleKeyDown));
-  onDestroy(() => window.removeEventListener('keydown', handleKeyDown));
-  onMount(() => middleColumn.scrollIntoView());
+  
+  onMount(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    middleColumn.scrollIntoView();
+  });
+
+  onDestroy(() => {
+    window.removeEventListener('keydown', handleKeyDown);
+  });
 </script>
 
 <main>

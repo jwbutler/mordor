@@ -1,40 +1,40 @@
 <script type="ts">
   export let messages: string[];
-  let scrollToBottom = true;
   let component: Element;
-  let lastMessageIndex = 0;
-  $: {
-    if (component) {
-      if (scrollToBottom) {
-        lastMessageIndex = messages.length - 1;
-      }
-    }
-  }
-  const onScroll = () => {
-    scrollToBottom = (component.scrollTop >= component.scrollHeight - component.clientHeight);
-  };
   
-  let lastFourMessages: string[];
   $: {
-    let startIndex = Math.max(0, lastMessageIndex - 3);
-    lastFourMessages = messages.slice(startIndex, startIndex + 4);
+    messages;
+    if (component) {
+      component.scrollTop = component.scrollHeight;
+    }
   }
 </script>
 
-<textarea
-  readonly
-  bind:this={component}
-  on:scroll={onScroll}
->{lastFourMessages.join('\n')}</textarea>
+<div class="border">
+  <textarea
+    disabled
+    bind:this={component}
+  >{messages.join('\n')}</textarea>
+</div>
 
 <style>
   textarea {
     font-family: monospace;
     width: 100%;
-    height: 72px;
+    height: 96px;
     resize: none;
+    overflow-y: auto;
+    border: none;
+  }
+  
+  textarea:disabled {
+    color: black;
+  }
+  
+  .border {
     border: 1px solid black;
     border-radius: 10px;
+    overflow: hidden;
   }
   
   @media (max-width: 767px) and (orientation: portrait) {
