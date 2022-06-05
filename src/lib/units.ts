@@ -1,4 +1,4 @@
-import { getMaxLife, getMaxMana } from '../utils/stats';
+import { getMaxLife, getMaxMana } from './stats';
 import type { Equipment, EquipmentSlot } from './items';
 import type { Sprite } from './sprites';
 import type { Stats } from './stats';

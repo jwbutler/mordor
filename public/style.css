@@ -5,8 +5,6 @@
 
 :root {
   --borderWidth: 1px;
-  --dungeonWidth: 320px;
-  --dungeonHeight: 240px;
 }
 
 html {

@@ -1,4 +1,4 @@
-import { titleCase } from '../utils/strings';
+import { titleCase } from './strings';
 import { zeroStats } from './stats';
 import type { Stats } from './stats';
 

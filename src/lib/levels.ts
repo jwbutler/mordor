@@ -1,7 +1,11 @@
-import type { CompassDirection, Coordinates } from '../types/geometry';
-import type { Level } from '../types/levels';
-import type { Tile } from '../types/tiles';
 import { move, rotateLeft, rotateRight } from './geometry';
+import type { CompassDirection, Coordinates } from './geometry';
+import type { Tile } from './tiles';
+
+type Level = {
+  tiles: Tile[][],
+  startingPoint: Coordinates
+};
 
 const getTile = (level: Level, { x, y }: Coordinates): Tile | null => level.tiles[y]?.[x] || null;
 
@@ -31,6 +35,8 @@ const getTilesInView = (
   
   return tiles;
 };
+
+export type { Level };
 
 export {
   getTile,

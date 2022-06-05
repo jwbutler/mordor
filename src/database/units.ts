@@ -1,7 +1,7 @@
-import { NoobSword } from '../types/items';
-import { koboldSprite } from '../types/sprites';
-import { UnitBuilder } from '../types/units';
-import type { Unit } from '../types/units';
+import { NoobSword } from '../lib/items';
+import { koboldSprite } from '../lib/sprites';
+import { UnitBuilder } from '../lib/units';
+import type { Unit } from '../lib/units';
 
 const createKobold = (): Unit => new UnitBuilder()
   .name('Kobold')

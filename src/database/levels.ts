@@ -1,15 +1,7 @@
-import type { Coordinates } from '../types/geometry';
-import type { Level } from '../types/levels';
-import type { Tile } from '../types/tiles';
+import type { Coordinates } from '../lib/geometry';
+import type { Level } from '../lib/levels';
+import type { Tile } from '../lib/tiles';
 import { createKobold } from './units';
-
-// +-----+
-// |     |
-// +-+-+ |
-// |     |
-// +D----+
-// |     |
-// +-----+
 
 const floor = (): Tile => ({ type: 'floor', enemies: [], objects: [] });
 const wall = (): Tile => ({ type: 'wall', enemies: [], objects: [] });
@@ -45,12 +37,22 @@ const fromString = (data: string, startingPoint: Coordinates): Level => {
 const createFirstLevel = (): Level => {
   const data = `
     #######
-    #     #
-    ##### #
-    #K    #
+    #    K#
+    #####K#
+    #KKKKK#
     #-#####
     #     #
     #######
+  `;
+  return fromString(data, { x: 1, y: 1 });
+};
+
+const smallerLevel = (): Level => {
+  const data = `
+    #####
+    # K #
+    ### #
+    #####
   `;
   return fromString(data, { x: 1, y: 1 });
 };
@@ -70,4 +72,8 @@ const biggerLevel = () => {
   return fromString(data, { x: 14, y: 7 }); 
 };
 
-export { createFirstLevel, biggerLevel };
+export {
+  createFirstLevel,
+  biggerLevel,
+  smallerLevel
+};

@@ -1,14 +1,14 @@
 <script type="ts">
   import { onMount } from 'svelte';
   import { getDungeonImages } from '../database/dungeonImages';
-  import { Coordinates, RelativeDirection } from '../types/geometry';
-  import type { CompassDirection } from '../types/geometry';
-  import type { Level } from '../types/levels';
-  import type { Tile } from '../types/tiles';
-  import { rotateLeft, rotateRight } from '../utils/geometry';
-  import { createImage } from '../utils/images';
-  import { getTile, getTilesInView } from '../utils/levels';
-  import { isDoor, isDoorFacingDirection, isWall, isWallLike } from '../utils/tiles';
+  import { Coordinates, RelativeDirection } from '../lib/geometry';
+  import type { CompassDirection } from '../lib/geometry';
+  import type { Level } from '../lib/levels';
+  import type { Tile } from '../lib/tiles';
+  import { rotateLeft, rotateRight } from '../lib/geometry';
+  import { createImage } from '../lib/images';
+  import { getTile, getTilesInView } from '../lib/levels';
+  import { isDoor, isDoorFacingDirection, isWall, isWallLike } from '../lib/tiles';
   import ControlsView from './ControlsView.svelte';
 
   export let tile: Tile;
@@ -140,9 +140,11 @@
     position: relative;
   }
   .dungeon {
-    width: var(--dungeonWidth);
-    height: var(--dungeonHeight);
+    width: 100%;
+    height: 100%;
     border: 1px solid black;
+    border-radius: 10px;
+    overflow: hidden;
   }
 
   .buffer {

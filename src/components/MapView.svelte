@@ -1,7 +1,7 @@
 <script type="ts">
-  import { CompassDirection } from '../types/geometry';
-  import type { Level } from '../types/levels';
-  import type { Tile } from '../types/tiles';
+  import { CompassDirection } from '../lib/geometry';
+  import type { Level } from '../lib/levels';
+  import type { Tile } from '../lib/tiles';
 
   export let level: Level;
   export let currentTile: Tile;
@@ -31,13 +31,9 @@
 </div>
 
 <style>
-  :root {
-    --doorColor: #ff00ff;
-  }
-  
   .container {
     width: 100%;
-    padding: 10%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,6 +45,9 @@
     width: 100%;
     height: 100%;
     align-items: stretch;
+    border: 1px solid black;
+    border-radius: 10px;
+    overflow: hidden;
   }
 
   .row {
@@ -64,7 +63,6 @@
     align-items: center;
     justify-content: center;
     flex-basis: 100%;
-    height: 40px;
   }
 
   .tile.current {
@@ -102,7 +100,6 @@
   @media (max-width: 767px) {
     .container {
       height: 100%;
-      flex-basis: 50%;
       padding: 0;
     }
     .tile {

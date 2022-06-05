@@ -33,11 +33,19 @@
     width: 100%;
     height: 72px;
     resize: none;
+    border: 1px solid black;
+    border-radius: 10px;
   }
   
-  @media (max-width: 767px) {
+  @media (max-width: 767px) and (orientation: portrait) {
     textarea {
       height: 48px;
+    }
+  }
+  
+  @media (max-width: 767px) and (orientation: landscape) {
+    textarea {
+      height: 100%;
     }
   }
 </style>

@@ -1,4 +1,3 @@
-
 import floor_ceiling from '../assets/gen/floor_ceiling.png';
 import hall_left_0 from '../assets/gen/hall_left_0.png';
 import hall_left_1 from '../assets/gen/hall_left_1.png';
@@ -10,7 +9,7 @@ import hall_right_2 from '../assets/gen/hall_right_2.png';
 import hall_right_3 from '../assets/gen/hall_right_3.png';
 import middle_door from '../assets/gen/middle_door.png';
 import wall_center_1 from '../assets/gen/wall_center_1.png';
-import wall_center_2 from '../assets/gen/wall_center_2j.png';
+import wall_center_2 from '../assets/gen/wall_center_2.png';
 import wall_center_3 from '../assets/gen/wall_center_3j.png';
 import wall_center_4 from '../assets/gen/wall_center_4j.png';
 import wall_left_1 from '../assets/gen/wall_left_1.png';
