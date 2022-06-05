@@ -69,15 +69,17 @@
     await loadTile();
   };
 
+  let middleColumn: HTMLElement;
   onMount(() => window.addEventListener('keydown', handleKeyDown));
   onDestroy(() => window.removeEventListener('keydown', handleKeyDown));
+  onMount(() => middleColumn.scrollIntoView());
 </script>
 
 <main>
   <div class="column left">
     <UnitView unit={player.unit} />
   </div>
-  <div class="column middle">
+  <div class="column middle" bind:this={middleColumn}>
     <div class="cell">
       <DungeonView
         {tile}
@@ -117,11 +119,11 @@
   }
 
   .column {
-    width: 100%;
     height: 100%;
     flex-basis: 100%;
     display: flex;
     flex-direction: column;
+    scroll-snap-align: center;
   }
   
   .middle {
@@ -156,16 +158,16 @@
     main {
       align-items: center;
       gap: 0;
-    }
-
-    .left {
-      display: none;
-    }
-
-    .right {
-      display: none;
+      scroll-snap-type: x mandatory;
+      overflow-x: auto;
     }
     
+    .column {
+      width: 100vw;
+      flex-shrink: 0;
+      padding: 0 20px;
+    }
+
     @media (orientation: landscape) {
       .middle {
         flex-direction: row;

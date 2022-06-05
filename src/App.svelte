@@ -19,7 +19,7 @@
   initializeState({ level, player });
 </script>
 
-<Game {level} {player} />
+<Game />
 
 <style>
 </style>
