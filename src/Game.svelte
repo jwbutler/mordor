@@ -111,7 +111,7 @@
     flex-direction: row;
     align-items: stretch;
     gap: 20px;
-    padding: 10px;
+    padding: 20px;
     width: 100%;
     height: 100%;
   }
@@ -127,7 +127,7 @@
   .middle {
     justify-content: stretch;
     align-items: stretch;
-    gap: 10px;
+    gap: 20px;
   }
   
   .left,.right {
@@ -136,10 +136,10 @@
   }
 
   .cell {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     flex-basis: 100%;
-    flex-shrink: 1;
-    width: 100%;
-    height: 100%;
   }
   
   pre {

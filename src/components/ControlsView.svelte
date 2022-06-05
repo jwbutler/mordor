@@ -26,8 +26,8 @@
     position: absolute;
     right: 20px;
     bottom: 20px;
-    width: 128px;
-    height: 128px;
+    width: 64px;
+    height: 64px;
     background-color: #d0d0d0;
     opacity: 0.75;
   }
@@ -35,7 +35,7 @@
   .arrow {
     position: absolute;
     transform: translate3d(-50%, -50%, 0);
-    font-size: 36px;
+    font-size: 16px;
     font-weight: bold;
     border: none;
     border-radius: 100%;
@@ -76,18 +76,15 @@
     top: 50%;
     left: 75%;
   }
-  
-  @media (pointer: fine) {
+
+  @media (max-width: 767px) {
     .container {
-      width: 64px;
-      height: 64px;
+      width: 128px;
+      height: 128px;
     }
     .arrow {
-      font-size: 16px;
+      font-size: 36px;
     }
-  }
-  
-  @media (pointer: coarse) {
     .arrow:hover:not(:active) {
       background-color: initial;
     }
