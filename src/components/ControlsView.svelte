@@ -79,8 +79,8 @@
 
   @media (max-width: 767px) {
     .container {
-      width: 128px;
-      height: 128px;
+      width: 96px;
+      height: 96px;
     }
     .arrow {
       font-size: 36px;
