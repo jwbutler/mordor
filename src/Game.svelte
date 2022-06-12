@@ -126,7 +126,6 @@
 
   .column {
     height: 100%;
-    flex-basis: 100%;
     display: flex;
     flex-direction: column;
     scroll-snap-align: center;
@@ -135,10 +134,12 @@
   .middle {
     justify-content: stretch;
     align-items: stretch;
+    flex: 1 0 30%;
     gap: 20px;
   }
   
   .left,.right {
+    flex: 0 1 30%;
     align-items: center;
     justify-content: flex-start;
   }
