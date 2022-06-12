@@ -14,7 +14,7 @@
   import { getRelativeDirection } from './lib/input';
   import { getTile } from './lib/levels';
   import { isDoorFacingDirection, isWallLike } from './lib/tiles';
-  
+
   let tile = $state.level.tiles[$state.player.coordinates.y][$state.player.coordinates.x];
   let player: Player;
   $: player =  $state.player;
@@ -25,14 +25,9 @@
     // a dumb trick to get Svelte to re-render
     tile = tile;
   };
-  
-  const sendMessage = message => {
-    console.log(message);
-    $state.messages = [...$state.messages, message];
-  };
 
-  const combatHandler = createCombatHandler({ sendMessage, render });
-  
+  const combatHandler = createCombatHandler({ render });
+
   const loadTile = async () => {
     if (tile.enemies.length > 0 && tile.enemies[0].life > 0) {
       $state.enableInput = false;
@@ -70,7 +65,7 @@
   };
 
   let middleColumn: HTMLElement;
-  
+
   onMount(() => {
     window.addEventListener('keydown', handleKeyDown);
     middleColumn.scrollIntoView();
@@ -130,14 +125,14 @@
     flex-direction: column;
     scroll-snap-align: center;
   }
-  
+
   .middle {
     justify-content: stretch;
     align-items: stretch;
     flex: 1 0 30%;
     gap: 20px;
   }
-  
+
   .left,.right {
     flex: 0 1 30%;
     align-items: center;
@@ -150,7 +145,7 @@
     gap: 20px;
     flex-basis: 100%;
   }
-  
+
   pre {
     font-family: monospace;
     overflow: auto;
@@ -167,7 +162,7 @@
       scroll-snap-type: x mandatory;
       overflow-x: auto;
     }
-    
+
     .column {
       width: 100vw;
       flex-shrink: 0;

@@ -7,8 +7,8 @@ const createKobold = (): Unit => new UnitBuilder()
   .name('Kobold')
   .level(1)
   .stats({
-    strength: 3,
-    dexterity: 5,
+    strength: 2,
+    dexterity: 4,
     intelligence: 3,
     wisdom: 2,
     constitution: 2
@@ -21,11 +21,11 @@ const createPlayerUnit = (): Unit => new UnitBuilder()
   .name('Chigz Jupsiz')
   .level(1)
   .stats({
-    strength: 5,
-    dexterity: 5,
-    intelligence: 5,
-    wisdom: 5,
-    constitution: 5
+    strength: 8,
+    dexterity: 8,
+    intelligence: 8,
+    wisdom: 8,
+    constitution: 8
   })
   .equipment(NoobSword)
   .sprite(koboldSprite) // just a placeholder

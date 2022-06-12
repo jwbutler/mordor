@@ -1,4 +1,4 @@
-import { getMaxLife, getMaxMana } from './stats';
+import { getExperienceToNextLevel, getMaxLife, getMaxMana } from './stats';
 import type { Equipment, EquipmentSlot } from './items';
 import type { Sprite } from './sprites';
 import type { Stats } from './stats';
@@ -8,9 +8,26 @@ type Unit = {
   level: number,
   stats: Stats,
   life: number,
+  maxLife: number,
   mana: number,
+  maxMana: number,
+  experience: number,
+  experienceToNextLevel: number,
   equipment: Partial<Record<EquipmentSlot, Equipment>>,
   sprite: Sprite
+};
+
+const levelUp = (unit: Unit) => {
+  unit.level++;
+  unit.experience = 0;
+  unit.experienceToNextLevel = getExperienceToNextLevel(unit.level);
+  unit.stats.strength++;
+  unit.stats.dexterity++;
+  unit.stats.constitution++;
+  unit.stats.intelligence++;
+  unit.stats.wisdom++;
+  unit.maxLife = getMaxLife(unit);
+  unit.maxMana = getMaxMana(unit);
 };
 
 class UnitBuilder {
@@ -62,13 +79,25 @@ class UnitBuilder {
   build = (): Unit => {
     const unit = {
       ...this.unit,
-      // TODO I don't love this hack
-      life: getMaxLife(this.unit as Unit),
-      mana: getMaxMana(this.unit as Unit),
-    };
+      life: 1,
+      mana: 1,
+      maxLife: 1,
+      maxMana: 1,
+      experience: 0,
+      experienceToNextLevel: getExperienceToNextLevel(this.unit.level as number)
+    } as Unit;
+    
+    unit.maxLife = getMaxLife(unit);
+    unit.maxMana = getMaxMana(unit);
+    unit.life = unit.maxLife;
+    unit.mana = unit.maxMana;
+    
     return unit as Unit;
   };
 }
 
 export type { Unit };
-export { UnitBuilder };
+export {
+  UnitBuilder,
+  levelUp
+};

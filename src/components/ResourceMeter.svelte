@@ -1,5 +1,5 @@
 <script type="ts">
-  type ResourceType = 'LIFE' | 'MANA';
+  type ResourceType = 'life' | 'mana' | 'experience';
   export let type: ResourceType;
   export let current: number;
   export let max: number;
@@ -54,5 +54,9 @@
   
   .mana {
     background-color: #0000ff;
+  }
+  
+  .experience {
+    background-color: #ffc000;
   }
 </style>

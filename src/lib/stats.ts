@@ -121,6 +121,9 @@ const getHitChance = (unit: Unit): number => {
   return hitChance;
 };
 
+// 4, 5, 6, 7, 8...
+const getExperienceToNextLevel = (level: number): number => level + 3;
+
 export type {
   Stat,
   Stats
@@ -129,6 +132,7 @@ export type {
 export {
   getAttackDamage,
   getDodgeChance,
+  getExperienceToNextLevel,
   getHitChance,
   getMaxLife,
   getMaxMana,

@@ -1,3 +1,4 @@
+import { levelUp } from '../lib/units';
 import { state as stateStore, type GameState } from '../stores/state';
 import { randBoolean } from '../lib/random';
 import type { Unit } from '../lib/units';
@@ -12,7 +13,6 @@ const takeDamage = (unit: Unit, damage: number) => {
 };
 
 type Props = {
-  sendMessage: (message: string) => void,
   render: () => void
 };
 
@@ -85,6 +85,18 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
         if (defender.life <= 0) {
           await sleep(shortSleepMillis);
           state.messages.push(`${defender.name} dies!`);
+          const playerUnit = state.player.unit;
+          if (defender === playerUnit) {
+            alert('GAME OVER!');
+          } else {
+            const { x, y } = state.player.coordinates;
+            const tile = state.level.tiles[y][x];
+            tile.enemies.splice(tile.enemies.indexOf(defender));
+            playerUnit.experience++;
+            if (playerUnit.experience >= playerUnit.experienceToNextLevel) {
+              levelUp(playerUnit);
+            }
+          }
           stateStore.set({ ... state });
         }
       }
