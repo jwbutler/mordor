@@ -149,7 +149,7 @@
   pre {
     font-family: monospace;
     overflow: auto;
-    max-width: 400px;
+    max-width: 300px;
     background-color: #f0f0f0;
     border: 1px solid black;
     margin: 0;
