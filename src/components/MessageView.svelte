@@ -37,15 +37,20 @@
     overflow: hidden;
   }
   
-  @media (max-width: 767px) and (orientation: portrait) {
-    textarea {
-      height: 48px;
+  @media (max-width: 767px) {
+    .border {
+      border-radius: 0;
     }
-  }
-  
-  @media (max-width: 767px) and (orientation: landscape) {
-    textarea {
-      height: 100%;
+    @media (orientation: portrait) {
+      textarea {
+        height: 48px;
+      }
+    }
+
+    @media (orientation: landscape) {
+      textarea {
+        height: 100%;
+      }
     }
   }
 </style>

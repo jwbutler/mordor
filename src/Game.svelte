@@ -161,13 +161,19 @@
       gap: 0;
       scroll-snap-type: x mandatory;
       overflow-x: auto;
+      padding: 0;
     }
 
     .column {
       width: 100vw;
       flex-shrink: 0;
-      padding: 0 20px;
+      padding: 0;
       flex-basis: auto;
+      gap: 0;
+    }
+    
+    .cell {
+      gap: 0;
     }
 
     @media (orientation: landscape) {

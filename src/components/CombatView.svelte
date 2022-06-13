@@ -31,17 +31,23 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     padding: 20px;
-    gap: 20px;
+    gap: 40px;
   }
   
   button {
-    width: 60%;
+    width: 80%;
     text-align: center;
-    padding: 10px;
+    padding: 20px;
     border: 1px solid #808080;
     border-radius: 10px;
+  }
+  
+  @media (max-width: 767px) {
+    .combat {
+      border-radius: 0;
+    }
   }
 </style>

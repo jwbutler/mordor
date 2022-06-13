@@ -155,6 +155,7 @@
     .dungeon {
       width: 100%;
       flex-basis: 80%;
+      border-radius: 0;
     }
   }
 </style>

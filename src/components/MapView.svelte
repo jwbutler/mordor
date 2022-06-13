@@ -88,6 +88,9 @@
   }
   
   @media (max-width: 767px) {
+    .map {
+      border-radius: 0;
+    }
     .tile {
       height: 100%;
     }
