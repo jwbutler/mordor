@@ -167,6 +167,7 @@
       width: 100vw;
       flex-shrink: 0;
       padding: 0 20px;
+      flex-basis: auto;
     }
 
     @media (orientation: landscape) {
