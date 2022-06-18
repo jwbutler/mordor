@@ -14,7 +14,8 @@
   export let level: Level;
   export let combatHandler: CombatHandler;
   export let navigate: () => void;
-  export let enableMovement: boolean;
+  export let movementEnabled: boolean;
+  export let setInputEnabled: (enabled: boolean) => void;
 </script>
 
 <div class="column">
@@ -25,7 +26,8 @@
       coordinates={player.coordinates}
       direction={player.direction}
       {navigate}
-      {enableMovement}
+      {movementEnabled}
+      {setInputEnabled}
     />
     <MessageView messages={$state.messages} />
   </div>

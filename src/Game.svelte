@@ -84,7 +84,8 @@
       {player}
       {combatHandler}
       navigate={handleNavigate}
-      enableMovement={!$state.inCombat}
+      movementEnabled={!$state.inCombat}
+      setInputEnabled={enabled => { $state.enableInput = enabled }} 
     />
   </div>
   <div class="column right">

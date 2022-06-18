@@ -18,6 +18,7 @@
   export let coordinates: Coordinates;
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
   export let enableMovement: boolean;
+  export let setInputEnabled: (enabled: boolean) => void;
 
   const maxDepth = 4;
   let tiles: Record<string, (Tile | null)[]>;
@@ -95,10 +96,13 @@
     context.putImageData(imageData, 0, 0);
   };
   
-  const render = async (images: RenderState) => {
+  const render = async (images: RenderState, doTransition: boolean) => {
     if (!bufferElement || !canvasElement) {
       return;
     }
+    
+    setInputEnabled(false);
+    
     const bufferContext = bufferElement?.getContext('2d');
     bufferContext.fillStyle = 'black';
     await drawImage(images.floorCeiling, bufferContext);
@@ -113,9 +117,7 @@
     if (images.unit !== null) {
       await drawImage(images.unit, bufferContext);
     }
-    
-    const doTransition = true;
-    
+
     if (doTransition) {
       await transition({
         source: bufferElement,
@@ -127,17 +129,19 @@
       const imageData = bufferContext.getImageData(0, 0, bufferElement.width, bufferElement.height);
       canvasElement.getContext('2d').putImageData(imageData, 0, 0);
     }
+    
+    setInputEnabled(true);
   };
   
   $: {
     const images = getRenderState();
-    render(images);
+    render(images, true);
     tile; //dependency
   }
   
   onMount(() => {
     const images = getRenderState();
-    render(images);
+    render(images, false);
   });
 
 </script>
