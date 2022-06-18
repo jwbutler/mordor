@@ -1,9 +1,6 @@
 <script lang="ts">
   import { createCombatHandler } from './classes/CombatHandler';
-  import CombatView from './components/CombatView.svelte';
-  import DungeonView from './components/DungeonView.svelte';
-  import MapView from './components/MapView.svelte';
-  import MessageView from './components/MessageView.svelte';
+  import MainColumn from "./components/MainColumn.svelte";
   import UnitView from './components/UnitView.svelte';
   import type { RelativeDirection } from './lib/geometry';
   import { state } from './stores/state';
@@ -81,27 +78,14 @@
     <UnitView unit={player.unit} />
   </div>
   <div class="column middle" bind:this={middleColumn}>
-    <div class="cell">
-      <DungeonView
-        {tile}
-        level={level}
-        coordinates={player.coordinates}
-        direction={player.direction}
-        navigate={handleNavigate}
-      />
-      <MessageView messages={$state.messages} />
-    </div>
-    <div class="cell">
-      {#if $state.inCombat}
-        <CombatView handler={combatHandler} />
-      {:else}
-        <MapView
-          level={level}
-          currentTile={tile}
-          direction={player.direction}
-        />
-      {/if}
-    </div>
+    <MainColumn
+      {tile}
+      {level}
+      {player}
+      {combatHandler}
+      navigate={handleNavigate}
+      enableMovement={!$state.inCombat}
+    />
   </div>
   <div class="column right">
     <pre>{JSON.stringify($state,null,2)}</pre>
@@ -139,13 +123,6 @@
     justify-content: flex-start;
   }
 
-  .cell {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    flex-basis: 100%;
-  }
-
   pre {
     font-family: monospace;
     overflow: auto;
@@ -169,10 +146,6 @@
       flex-shrink: 0;
       padding: 0;
       flex-basis: auto;
-      gap: 0;
-    }
-    
-    .cell {
       gap: 0;
     }
 

@@ -30,6 +30,8 @@ const fromString = (data: string, startingPoint: Coordinates): Level => {
 
   return {
     tiles,
+    width: tiles[0].length,
+    height: tiles.length,
     startingPoint
   };
 };
@@ -60,13 +62,13 @@ const smallerLevel = (): Level => {
 const biggerLevel = () => {
   const data = `
     ################
-    #    ######   ##
+    #    ######  K##
     #### ###    # ##
-    # ## # # ####  #
-    #    # # ##   ##
-    # ##     ## # ##
-    #  ####     ####
-    ##      ###    #
+    #K## # # ####  #
+    #    # # ## K ##
+    # ##  K  ## # ##
+    # K####     ####
+    ##   K  ###    #
     ################
   `;
   return fromString(data, { x: 14, y: 7 }); 

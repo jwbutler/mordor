@@ -15,12 +15,12 @@
 
 <div class="combat">
   {#if $state.enableInput}
-    <button on:click={attack}>
-      Attack
-    </button>
-    <button disabled>Item</button>
-    <button disabled>Run</button>
+    <button on:click={attack}>Attack</button>
+  {:else}
+    <button disabled>Attack</button>
   {/if}
+  <button disabled>Item</button>
+  <button disabled>Run</button>
 </div>
 
 <style>
@@ -31,18 +31,22 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     padding: 20px;
-    gap: 40px;
   }
   
   button {
-    width: 80%;
+    width: 90%;
+    height: 25%;
     text-align: center;
-    padding: 20px;
     border: 1px solid #808080;
     border-radius: 10px;
+    background-color: #f0f0f0;
+  }
+  
+  button:disabled {
+    background-color: #e0e0e0;
   }
   
   @media (max-width: 767px) {

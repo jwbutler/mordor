@@ -1,28 +1,48 @@
 <script type="ts">
-  import { CompassDirection } from '../lib/geometry';
+  import { CompassDirection, Coordinates } from '../lib/geometry';
   import type { Level } from '../lib/levels';
   import type { Tile } from '../lib/tiles';
 
   export let level: Level;
   export let currentTile: Tile;
+  export let coordinates: Coordinates;
   export let direction: CompassDirection;
 
-  const tileClass = (tile: Tile, currentTile: Tile, currentDirection: CompassDirection): string => {
-    const classNames: string[] = ['tile', tile.type];
+  const tileClass = (tile: Tile | null, currentTile: Tile, currentDirection: CompassDirection): string => {
+    const classNames: string[] = ['tile', tile?.type || 'wall'];
     if (tile === currentTile) {
       classNames.push('current');
       classNames.push(`${currentDirection}Arrow`);
     }
     return classNames.join(' ');
   };
+  
+  const radius = 3;
+  let visibleTiles: (Tile | null)[][];
+  $: {
+    visibleTiles = [];
+    // TODO this probably doesn't handle every case
+    const minY = coordinates.y - radius;
+    const maxY = coordinates.y + radius;
+    const minX = coordinates.x - radius;
+    const maxX = coordinates.x + radius;
+    
+    for (let y = minY; y <= maxY; y++) {
+      const row: (Tile | null)[] = [];
+      for (let x = minX; x <= maxX; x++) {
+        row.push(level.tiles[y]?.[x] || null);
+      }
+      visibleTiles.push(row);
+    }
+  }
 </script>
 
 <div class="map">
-  {#each level.tiles as row}
+  {#each visibleTiles as row}
     <div class="row">
       {#each row as tile}
-        <div
-          class={tileClass(tile, currentTile, direction)}></div>
+        <div class={tileClass(tile, currentTile, direction)}>  
+        </div>
       {/each}
     </div>
   {/each}
@@ -38,6 +58,7 @@
     border: 1px solid black;
     border-radius: 10px;
     overflow: hidden;
+    background-color: darkgray;
   }
 
   .row {

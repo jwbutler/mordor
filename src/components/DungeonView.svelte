@@ -9,13 +9,14 @@
   import { createImage } from '../lib/images';
   import { getTile, getTilesInView } from '../lib/levels';
   import { isDoor, isDoorFacingDirection, isWall, isWallLike } from '../lib/tiles';
-  import ControlsView from './ControlsView.svelte';
+  import ControlsView from './ControlsView2.svelte';
 
   export let tile: Tile;
   export let level: Level;
   export let direction: CompassDirection;
   export let coordinates: Coordinates;
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
+  export let enableMovement: boolean;
 
   const maxDepth = 4;
   let tiles: Record<string, (Tile | null)[]>;
@@ -131,7 +132,9 @@
 <div class="container">
   <canvas class="dungeon" bind:this={canvasElement} width={640} height={480}>
   </canvas>
-  <ControlsView {navigate} />
+  {#if enableMovement}
+    <ControlsView {navigate} />
+  {/if}
 </div>
 <canvas class="buffer" bind:this={bufferElement} width={640} height={480}></canvas>
 

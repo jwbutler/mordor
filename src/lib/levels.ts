@@ -4,6 +4,8 @@ import type { Tile } from './tiles';
 
 type Level = {
   tiles: Tile[][],
+  width: number,
+  height: number,
   startingPoint: Coordinates
 };
 
