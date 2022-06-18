@@ -1,6 +1,7 @@
 <script type="ts">
   import { onMount } from 'svelte';
   import { getDungeonImages } from '../database/dungeonImages';
+  import { transition } from '../lib/animations';
   import { Coordinates, RelativeDirection } from '../lib/geometry';
   import type { CompassDirection } from '../lib/geometry';
   import type { Level } from '../lib/levels';
@@ -112,8 +113,20 @@
     if (images.unit !== null) {
       await drawImage(images.unit, bufferContext);
     }
-    const imageData = bufferContext.getImageData(0, 0, bufferElement.width, bufferElement.height);
-    canvasElement.getContext('2d').putImageData(imageData, 0, 0);
+    
+    const doTransition = true;
+    
+    if (doTransition) {
+      await transition({
+        source: bufferElement,
+        dest: canvasElement,
+        delay: 50,
+        frames: 5
+      });
+    } else {
+      const imageData = bufferContext.getImageData(0, 0, bufferElement.width, bufferElement.height);
+      canvasElement.getContext('2d').putImageData(imageData, 0, 0);
+    }
   };
   
   $: {
