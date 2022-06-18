@@ -17,7 +17,7 @@
   export let direction: CompassDirection;
   export let coordinates: Coordinates;
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
-  export let enableMovement: boolean;
+  export let movementEnabled: boolean;
   export let setInputEnabled: (enabled: boolean) => void;
 
   const maxDepth = 4;
@@ -123,7 +123,7 @@
         source: bufferElement,
         dest: canvasElement,
         delay: 50,
-        frames: 5
+        frames: 3
       });
     } else {
       const imageData = bufferContext.getImageData(0, 0, bufferElement.width, bufferElement.height);
@@ -149,7 +149,7 @@
 <div class="container">
   <canvas class="dungeon" bind:this={canvasElement} width={640} height={480}>
   </canvas>
-  {#if enableMovement}
+  {#if movementEnabled}
     <ControlsView {navigate} />
   {/if}
 </div>
