@@ -31,18 +31,18 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     padding: 20px;
+    gap: 20px;
   }
   
   button {
-    width: 90%;
-    height: 25%;
     text-align: center;
     border: 1px solid #808080;
     border-radius: 10px;
     background-color: #f0f0f0;
+    padding: 10px;
+    width: 35%;
   }
   
   button:disabled {
@@ -52,6 +52,12 @@
   @media (max-width: 767px) {
     .combat {
       border-radius: 0;
+      justify-content: space-between;
+    }
+    
+    button {
+      width: 90%;
+      height: 25%;
     }
   }
 </style>
