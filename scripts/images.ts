@@ -41,18 +41,31 @@ const outDir = 'src/assets/gen';
 
 const WHITE: RGBA = [255, 255, 255, 255];
 const LIGHT_GRAY: RGBA = [192, 192, 192, 255];
+const LIGHTER_GRAY: RGBA = [224, 224, 224, 255];
 const DARK_GRAY: RGBA = [128, 128, 128, 255];
+const DARKER_GRAY: RGBA = [64, 64, 64, 255];
 const RED: RGBA = [255, 0, 0, 255];
 const YELLOW: RGBA = [255, 255, 0, 255];
+const DARK_GREEN: RGBA = [0, 128, 0, 255];
 const BLUE: RGBA = [0, 0, 255, 255];
 const BROWN: RGBA = [128, 64, 0, 255];
+const DARK_BROWN: RGBA = [64, 32, 0, 255];
 const TRANSPARENT: RGBA = [0, 0, 0, 0];
 
 const getPaletteSwaps = (filename: string): Pair<RGBA>[] => {
-  if (filename.match(/hall|wall|floor/g)) {
+  if (filename.match(/hall/g)) {
     return [
       [WHITE, TRANSPARENT],
-      [RED, DARK_GRAY],
+      [RED, DARK_GRAY]
+    ];
+  } else if (filename.match(/wall/g)) {
+    return [
+      [WHITE, TRANSPARENT],
+      [RED, DARK_GRAY]
+    ];
+  } else if (filename.match(/floor/g)) {
+    return [
+      [WHITE, TRANSPARENT],
       [YELLOW, BROWN],
       [BLUE, BROWN],
     ];

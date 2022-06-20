@@ -1,7 +1,7 @@
 import type { Coordinates } from '../lib/geometry';
 import type { Level } from '../lib/levels';
 import type { Tile } from '../lib/tiles';
-import { createKobold, createKrawkdawg, createPoopGolem } from './units';
+import { createKobold, createCrocDog, createMudMan } from './units';
 
 const floor = (): Tile => ({ type: 'floor', enemies: [], objects: [] });
 const wall = (): Tile => ({ type: 'wall', enemies: [], objects: [] });
@@ -19,7 +19,9 @@ const fromString = (data: string, startingPoint: Coordinates): Level => {
         case '#': return wall();
         case '|': return horizontalDoor();
         case '-': return verticalDoor();
+        case 'C': return { type: 'floor', enemies: [createCrocDog()], objects: [] };
         case 'K': return { type: 'floor', enemies: [createKobold()], objects: [] };
+        case 'M': return { type: 'floor', enemies: [createMudMan()], objects: [] };
         default:  return floor();
       }
     });
@@ -62,13 +64,13 @@ const smallerLevel = (): Level => {
 const biggerLevel = () => {
   const data = `
     ################
-    #    ######  K##
+    #M   ######  K##
     #### ###    # ##
-    #K## # # ####  #
-    #    # # ## K ##
+    #K## # # #### M#
+    # C  # # ## K ##
     # ##  K  ## # ##
     # K####     ####
-    ##   K  ###    #
+    ##   C  ###    #
     ################
   `;
   return fromString(data, { x: 14, y: 7 }); 

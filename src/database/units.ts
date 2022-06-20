@@ -1,7 +1,7 @@
 import { NoobSword } from '../lib/items';
 import { koboldSprite } from '../lib/sprites';
-import { krawkdawgSprite } from '../lib/sprites';
-import { poopGolemSprite } from '../lib/sprites';
+import { crocDogSprite } from '../lib/sprites';
+import { mudManSprite } from '../lib/sprites';
 import { UnitBuilder } from '../lib/units';
 import type { Unit } from '../lib/units';
 
@@ -19,36 +19,36 @@ const createKobold = (): Unit => new UnitBuilder()
   .sprite(koboldSprite)
   .build();
 
-const createKrawkdawg = (): Unit => new UnitBuilder()
-  .name('Krawkdawg')
+const createCrocDog = (): Unit => new UnitBuilder()
+  .name('Croc Dog')
   .level(1)
   .stats({
-    strength: 2,
-    dexterity: 4,
+    strength: 4,
+    dexterity: 6,
     intelligence: 3,
     wisdom: 2,
-    constitution: 2
+    constitution: 3
   })
   .equipment(NoobSword)
-  .sprite(krawkdawgSprite)
+  .sprite(crocDogSprite)
   .build();
 
-const createPoopGolem = (): Unit => new UnitBuilder()
-  .name('Poop Golem')
+const createMudMan = (): Unit => new UnitBuilder()
+  .name('Mud Man')
   .level(1)
   .stats({
-    strength: 2,
+    strength: 6,
     dexterity: 4,
     intelligence: 3,
     wisdom: 2,
-    constitution: 2
+    constitution: 4
   })
   .equipment(NoobSword)
-  .sprite(poopGolemSprite)
+  .sprite(mudManSprite)
   .build();
   
 const createPlayerUnit = (): Unit => new UnitBuilder()
-  .name('Chigz Jupsiz')
+  .name('Player Guy')
   .level(1)
   .stats({
     strength: 8,
@@ -63,7 +63,7 @@ const createPlayerUnit = (): Unit => new UnitBuilder()
 
 export {
   createKobold,
-  createKrawkdawg,
+  createCrocDog,
   createPlayerUnit,
-  createPoopGolem
+  createMudMan
 };
