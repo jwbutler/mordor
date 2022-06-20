@@ -10,16 +10,16 @@ import hall_right_3 from '../assets/gen/hall_right_3.png';
 import middle_door from '../assets/gen/middle_door.png';
 import wall_center_1 from '../assets/gen/wall_center_1.png';
 import wall_center_2 from '../assets/gen/wall_center_2.png';
-import wall_center_3 from '../assets/gen/wall_center_3j.png';
-import wall_center_4 from '../assets/gen/wall_center_4j.png';
+import wall_center_3 from '../assets/gen/wall_center_3.png';
+import wall_center_4 from '../assets/gen/wall_center_4.png';
 import wall_left_1 from '../assets/gen/wall_left_1.png';
-import wall_left_2 from '../assets/gen/wall_left_2j.png';
-import wall_left_3 from '../assets/gen/wall_left_3j.png';
-import wall_left_4 from '../assets/gen/wall_left_4j.png';
+import wall_left_2 from '../assets/gen/wall_left_2.png';
+import wall_left_3 from '../assets/gen/wall_left_3.png';
+import wall_left_4 from '../assets/gen/wall_left_4.png';
 import wall_right_1 from '../assets/gen/wall_right_1.png';
-import wall_right_2 from '../assets/gen/wall_right_2j.png';
-import wall_right_3 from '../assets/gen/wall_right_3j.png';
-import wall_right_4 from '../assets/gen/wall_right_4j.png';
+import wall_right_2 from '../assets/gen/wall_right_2.png';
+import wall_right_3 from '../assets/gen/wall_right_3.png';
+import wall_right_4 from '../assets/gen/wall_right_4.png';
 
 type DungeonImages = {
   hallsLeft: string[],

@@ -1,14 +1,15 @@
 import { Readable, writable } from 'svelte/store';
-import type { Writable } from 'svelte/store';
 import type { Level } from '../lib/levels';
 import type { Player } from '../lib/player';
+
+type Screen = 'INTRO' | 'TOWN' | 'DUNGEON' | 'COMBAT';
 
 type GameState = {
   level: Level,
   player: Player,
   enableInput: boolean,
   messages: string[],
-  inCombat: boolean
+  screen: Screen
 };
 
 type InitialState = {
@@ -26,12 +27,16 @@ const initialize = ({ level, player }: InitialState) => {
     player,
     enableInput: true,
     messages: [],
-    inCombat: false
+    screen: 'INTRO'
   });
 };
 
 export {
   initialize,
-  state,
-  type GameState
+  state
 };
+
+export type {
+  GameState,
+  Screen
+}

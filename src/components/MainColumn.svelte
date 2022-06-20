@@ -1,40 +1,49 @@
 <script type="ts">
+  /*
+   * TODO - this should probably use slots and accept components from the Game component. 
+   */
   import type { CombatHandler } from '../classes/CombatHandler';
   import { Level } from '../lib/levels';
   import { Player } from '../lib/player';
   import type { Tile } from '../lib/tiles';
+  import type { Screen } from '../stores/state';
   import CombatView from './CombatView.svelte';
   import DungeonView from './DungeonView.svelte';
   import MinimapView from './MinimapView.svelte';
   import MessageView from './MessageView.svelte';
-  import { state } from '../stores/state';
+  import TownView from './TownView.svelte';
   
   export let tile: Tile;
   export let player: Player;
   export let level: Level;
+  export let screen: Screen;
+  export let messages: string[];
   export let combatHandler: CombatHandler;
   export let navigate: () => void;
-  export let movementEnabled: boolean;
   export let setInputEnabled: (enabled: boolean) => void;
 </script>
 
 <div class="column">
   <div class="cell">
-    <DungeonView
-      {tile}
-      level={level}
-      coordinates={player.coordinates}
-      direction={player.direction}
-      {navigate}
-      {movementEnabled}
-      {setInputEnabled}
-    />
-    <MessageView messages={$state.messages} />
+    {#if screen === 'DUNGEON' || screen === 'COMBAT'} 
+      <DungeonView
+        {tile}
+        level={level}
+        coordinates={player.coordinates}
+        direction={player.direction}
+        {navigate}
+        {screen}
+        {setInputEnabled}
+      />
+    {:else if screen === 'TOWN'}
+      <TownView onExit={() => screen === 'DUNGEON'} />
+    {/if}
+    <MessageView messages={messages} />
   </div>
   <div class="cell">
-    {#if $state.inCombat}
+    {#if screen === 'COMBAT'}
       <CombatView handler={combatHandler} />
-    {:else}
+    {:else if screen === 'DUNGEON'}
       <MinimapView
         {level}
         currentTile={tile}

@@ -10,6 +10,7 @@
   import { createImage } from '../lib/images';
   import { getTile, getTilesInView } from '../lib/levels';
   import { isDoor, isDoorFacingDirection, isWall, isWallLike } from '../lib/tiles';
+  import type { Screen } from '../stores/state';
   import ControlsView from './ControlsView2.svelte';
 
   export let tile: Tile;
@@ -17,7 +18,7 @@
   export let direction: CompassDirection;
   export let coordinates: Coordinates;
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
-  export let movementEnabled: boolean;
+  export let screen: Screen;
   export let setInputEnabled: (enabled: boolean) => void;
 
   const maxDepth = 4;
@@ -149,7 +150,7 @@
 <div class="container">
   <canvas class="dungeon" bind:this={canvasElement} width={640} height={480}>
   </canvas>
-  {#if movementEnabled}
+  {#if screen === 'DUNGEON'}
     <ControlsView {navigate} />
   {/if}
 </div>

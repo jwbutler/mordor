@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createCombatHandler } from './classes/CombatHandler';
+  import IntroView from "./components/IntroView.svelte";
   import MainColumn from "./components/MainColumn.svelte";
   import UnitView from './components/UnitView.svelte';
   import type { RelativeDirection } from './lib/geometry';
@@ -41,7 +42,7 @@
   };
   
   const handleNavigate = async (relativeDirection: RelativeDirection) => {
-    if (!$state.enableInput || $state.inCombat) {
+    if (!$state.enableInput || $state.screen === 'COMBAT') {
       return;
     }
     const { coordinates, direction } = navigate({
@@ -65,7 +66,9 @@
 
   onMount(() => {
     window.addEventListener('keydown', handleKeyDown);
-    middleColumn.scrollIntoView();
+    if (middleColumn) {
+      middleColumn.scrollIntoView();
+    }
   });
 
   onDestroy(() => {
@@ -74,23 +77,28 @@
 </script>
 
 <main>
-  <div class="column left">
-    <UnitView unit={player.unit} />
-  </div>
-  <div class="column middle" bind:this={middleColumn}>
-    <MainColumn
-      {tile}
-      {level}
-      {player}
-      {combatHandler}
-      navigate={handleNavigate}
-      movementEnabled={!$state.inCombat}
-      setInputEnabled={enabled => { $state.enableInput = enabled }} 
-    />
-  </div>
-  <div class="column right">
-    <pre>{JSON.stringify($state,null,2)}</pre>
-  </div>
+  {#if $state.screen === 'INTRO'}
+    <IntroView onComplete={() => { $state.screen = 'DUNGEON'; }}/>
+  {:else}
+    <div class="column left">
+      <UnitView unit={player.unit} />
+    </div>
+    <div class="column middle" bind:this={middleColumn}>
+      <MainColumn
+        {tile}
+        {level}
+        {player}
+        screen={$state.screen}
+        messages={$state.messages}
+        {combatHandler}
+        navigate={handleNavigate}
+        setInputEnabled={enabled => { $state.enableInput = enabled; }} 
+      />
+    </div>
+    <div class="column right">
+      <pre>{JSON.stringify($state,null,2)}</pre>
+    </div>
+  {/if}
 </main>
 
 <style>

@@ -33,12 +33,12 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
     if (randBoolean()) {
       attacker = enemy;
       defender = state.player.unit;
-      state.inCombat = true;
+      state.screen = 'COMBAT';
       await playTurn(state);
     } else {
       attacker = state.player.unit;
       defender = enemy;
-      state.inCombat = true;
+      state.screen = 'COMBAT';
     }
   };
 
@@ -49,7 +49,7 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
     await render();
     if (defender.life <= 0) {
       await sleep(longSleepMillis);
-      state.inCombat = false;
+      state.screen = 'DUNGEON';
       stateStore.set({ ... state });
     } else {
       const _attacker = attacker;
@@ -64,7 +64,7 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
     await playTurn(state);
     stateStore.set({ ... state });
     await sleep(longSleepMillis);
-    if (state.inCombat) {
+    if (state.screen === 'COMBAT') {
       await playTurn(state);
       stateStore.set({ ... state });
     }
