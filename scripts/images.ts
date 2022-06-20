@@ -6,19 +6,29 @@ import imageMin from 'imagemin';
 import pngquantPlugin from 'imagemin-pngquant';
 import optipngPlugin from 'imagemin-optipng';
 
-const removeWhite = (imageData: ImageData): ImageData => {
+type RGBA = [number, number, number, number];
+
+type Pair<T> = [T, T]; 
+
+const matches = (a: RGBA, b: RGBA) => JSON.stringify(a) === JSON.stringify(b);
+
+const replaceColors = (imageData: ImageData, paletteSwaps: Pair<RGBA>[]): ImageData => {
   const array = new Uint8ClampedArray(imageData.data.length);
 
   for (let i = 0; i < imageData.data.length; i += 4) {
-    // @ts-ignore
     const [r, g, b, a] = imageData.data.slice(i, i + 4);
     array[i] = r;
     array[i + 1] = g;
     array[i + 2] = b;
     array[i + 3] = a;
 
-    if (r === 255 && g === 255 && b === 255 && a === 255) {
-      array[i + 3] = 0;
+    for (const [src, dest] of paletteSwaps) {
+      if (matches(src, [r, g, b, a])) {
+        array[i] = dest[0];
+        array[i + 1] = dest[1];
+        array[i + 2] = dest[2];
+        array[i + 3] = dest[3];
+      }
     }
   }
 
@@ -28,6 +38,30 @@ const removeWhite = (imageData: ImageData): ImageData => {
 const bmpDir = 'images';
 const tmpDir = 'tmp/images';
 const outDir = 'src/assets/gen';
+
+const WHITE: RGBA = [255, 255, 255, 255];
+const LIGHT_GRAY: RGBA = [192, 192, 192, 255];
+const DARK_GRAY: RGBA = [128, 128, 128, 255];
+const RED: RGBA = [255, 0, 0, 255];
+const YELLOW: RGBA = [255, 255, 0, 255];
+const BLUE: RGBA = [0, 0, 255, 255];
+const BROWN: RGBA = [128, 64, 0, 255];
+const TRANSPARENT: RGBA = [0, 0, 0, 0];
+
+const getPaletteSwaps = (filename: string): Pair<RGBA>[] => {
+  if (filename.match(/hall|wall|floor/g)) {
+    return [
+      [WHITE, TRANSPARENT],
+      [RED, DARK_GRAY],
+      [YELLOW, BROWN],
+      [BLUE, BROWN],
+    ];
+  } else {
+    return [
+      [WHITE, TRANSPARENT]
+    ];
+  }
+};
 
 const main = async () => {
   rimraf.sync(tmpDir);
@@ -41,8 +75,8 @@ const main = async () => {
     const context = canvas.getContext('2d');
     context.drawImage(image, 0, 0);
     const data = context.getImageData(0, 0, image.width, image.height);
-    const withTransparency = removeWhite(data);
-    context.putImageData(withTransparency, 0, 0);
+    const swapped = replaceColors(data, getPaletteSwaps(filename));
+    context.putImageData(swapped, 0, 0);
     const outputBuffer = canvas.toBuffer();
     const outputFilename = `${tmpDir}/${filename.replace('bmp', 'png').replaceAll(' ', '_')}`; 
     writeFileSync(outputFilename, outputBuffer);

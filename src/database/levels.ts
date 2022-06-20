@@ -19,7 +19,7 @@ const fromString = (data: string, startingPoint: Coordinates): Level => {
         case '#': return wall();
         case '|': return horizontalDoor();
         case '-': return verticalDoor();
-        case 'K': return { type: 'floor', enemies: [/*createKobold()*/ createPoopGolem()], objects: [] };
+        case 'K': return { type: 'floor', enemies: [createKobold()], objects: [] };
         default:  return floor();
       }
     });
