@@ -1,10 +1,9 @@
 <script lang="ts">
   import { createCombatHandler } from './classes/CombatHandler';
   import IntroView from "./components/IntroView.svelte";
-  import MainColumn from "./components/MainColumn.svelte";
   import UnitView from './components/UnitView.svelte';
   import type { RelativeDirection } from './lib/geometry';
-  import { state } from './stores/state';
+  import { Screen, state } from './stores/state';
   import type { Level } from './lib/levels';
   import type { Player } from './lib/player';
   import { move, navigate } from './lib/geometry';
@@ -12,6 +11,13 @@
   import { getRelativeDirection } from './lib/input';
   import { getTile } from './lib/levels';
   import { isDoorFacingDirection, isWallLike } from './lib/tiles';
+  import DungeonView from './components/DungeonView.svelte';
+  import TownView from './components/TownView.svelte';
+  import MessageView from './components/MessageView.svelte';
+  import CombatView from './components/CombatView.svelte';
+  import MinimapView from './components/MinimapView.svelte';
+  import footstep from './assets/footstep.mp3';
+  import { playAudio } from './lib/sounds';
 
   let tile = $state.level.tiles[$state.player.coordinates.y][$state.player.coordinates.x];
   let player: Player;
@@ -45,6 +51,9 @@
     if (!$state.enableInput || $state.screen === 'COMBAT') {
       return;
     }
+    
+    playAudio('footstep');
+
     const { coordinates, direction } = navigate({
       coordinates: $state.player.coordinates,
       compassDirection: $state.player.direction,
@@ -62,41 +71,55 @@
     await loadTile();
   };
 
-  let middleColumn: HTMLElement;
+  let leftColumn: HTMLElement;
 
   onMount(() => {
     window.addEventListener('keydown', handleKeyDown);
-    if (middleColumn) {
-      middleColumn.scrollIntoView();
+    if (leftColumn) {
+      leftColumn.scrollIntoView();
     }
   });
 
   onDestroy(() => {
     window.removeEventListener('keydown', handleKeyDown);
   });
+  
+  let screen: Screen;
+  $: screen = $state.screen;
 </script>
 
 <main>
-  {#if $state.screen === 'INTRO'}
+  {#if screen === 'INTRO'}
     <IntroView onComplete={() => { $state.screen = 'DUNGEON'; }}/>
   {:else}
-    <div class="column left">
-      <UnitView unit={player.unit} />
-    </div>
-    <div class="column middle" bind:this={middleColumn}>
-      <MainColumn
-        {tile}
-        {level}
-        {player}
-        screen={$state.screen}
-        messages={$state.messages}
-        {combatHandler}
-        navigate={handleNavigate}
-        setInputEnabled={enabled => { $state.enableInput = enabled; }} 
-      />
+    <div class="column left" bind:this={leftColumn}>
+      {#if screen === 'DUNGEON' || screen === 'COMBAT'} 
+        <DungeonView
+          {tile}
+          level={level}
+          coordinates={player.coordinates}
+          direction={player.direction}
+          {navigate}
+          {screen}
+          setInputEnabled={enabled => { $state.enableInput = enabled; }}
+        />
+      {:else if screen === 'TOWN'}
+        <TownView onExit={() => $state.screen === 'DUNGEON'} />
+      {/if}
+      <MessageView messages={$state.messages} />
     </div>
     <div class="column right">
-      <pre>{JSON.stringify($state,null,2)}</pre>
+      <UnitView unit={player.unit} />
+      {#if screen === 'COMBAT'}
+        <CombatView handler={combatHandler} />
+      {:else if screen === 'DUNGEON'}
+        <MinimapView
+          {level}
+          currentTile={tile}
+          coordinates={player.coordinates}
+          direction={player.direction}
+        />
+      {/if}
     </div>
   {/if}
 </main>
@@ -108,8 +131,7 @@
     align-items: stretch;
     gap: 20px;
     padding: 20px;
-    width: 100%;
-    height: 100%;
+    height: 640px;
     max-width: 1280px;
     margin: 0 auto;
   }
@@ -118,20 +140,19 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
     scroll-snap-align: center;
   }
 
-  .middle {
-    justify-content: stretch;
+  .left {
     align-items: stretch;
-    flex: 1 0 30%;
-    gap: 20px;
+    width: 640px;
   }
 
-  .left,.right {
-    flex: 0 1 30%;
+  .right {
     align-items: center;
-    justify-content: flex-start;
+    width: 320px;
   }
 
   pre {

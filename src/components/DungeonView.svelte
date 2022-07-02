@@ -104,7 +104,7 @@
     
     setInputEnabled(false);
     
-    const bufferContext = bufferElement?.getContext('2d');
+    const bufferContext = bufferElement.getContext('2d') as CanvasRenderingContext2D;
     bufferContext.fillStyle = 'black';
     await drawImage(images.floorCeiling, bufferContext);
     for (let i = 3; i >= 0; i--) {
@@ -159,10 +159,10 @@
 <style>
   .container {
     position: relative;
+    width: 640px;
+    height: 480px;
   }
   .dungeon {
-    width: 100%;
-    height: 100%;
     border: 1px solid black;
     border-radius: 10px;
     overflow: hidden;
