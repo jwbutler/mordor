@@ -13,7 +13,8 @@
   const player: Player = {
     unit: playerUnit,
     coordinates: level.startingPoint,
-    direction: 'east'
+    direction: 'east',
+    location: 'dungeon'
   };
   
   initializeState({ level, player });

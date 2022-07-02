@@ -3,20 +3,19 @@
   import IntroView from "./components/IntroView.svelte";
   import UnitView from './components/UnitView.svelte';
   import type { RelativeDirection } from './lib/geometry';
-  import { Screen, state } from './stores/state';
+  import { Menu, state } from './stores/state';
   import type { Level } from './lib/levels';
   import type { Player } from './lib/player';
   import { move, navigate } from './lib/geometry';
   import { onMount, onDestroy } from 'svelte';
   import { getRelativeDirection } from './lib/input';
   import { getTile } from './lib/levels';
-  import { isDoorFacingDirection, isWallLike } from './lib/tiles';
+  import { isDoorFacingDirection, isStairs, isWallLike } from './lib/tiles';
   import DungeonView from './components/DungeonView.svelte';
   import TownView from './components/TownView.svelte';
   import MessageView from './components/MessageView.svelte';
   import CombatView from './components/CombatView.svelte';
   import MinimapView from './components/MinimapView.svelte';
-  import footstep from './assets/footstep.mp3';
   import { playAudio } from './lib/sounds';
 
   let tile = $state.level.tiles[$state.player.coordinates.y][$state.player.coordinates.x];
@@ -48,7 +47,7 @@
   };
   
   const handleNavigate = async (relativeDirection: RelativeDirection) => {
-    if (!$state.enableInput || $state.screen === 'COMBAT') {
+    if (!$state.enableInput || $state.menu !== null) {
       return;
     }
     
@@ -63,6 +62,14 @@
     const nextTile = getTile(level, coordinates);
     if (isDoorFacingDirection(nextTile, direction)) {
       player.coordinates = move(coordinates, direction); // assume the developer put a floor tile there...
+    } else if (isStairs(nextTile)) {
+      player.location = 'town';
+      player.coordinates = { x: 0, y: 0 };
+      if (player.unit.life < player.unit.maxLife || player.unit.mana < player.unit.maxMana) {
+        player.unit.life = player.unit.maxLife;
+        player.unit.mana = player.unit.maxMana;
+        $state.messages.push('You feel much better.');
+      }
     } else if (!isWallLike(nextTile, direction)) {
       player.coordinates = coordinates;
     }
@@ -84,35 +91,39 @@
     window.removeEventListener('keydown', handleKeyDown);
   });
   
-  let screen: Screen;
-  $: screen = $state.screen;
+  let menu: Menu | null;
+  $: menu = $state.menu;
 </script>
 
 <main>
-  {#if screen === 'INTRO'}
+  {#if menu === 'INTRO'}
     <IntroView onComplete={() => { $state.screen = 'DUNGEON'; }}/>
   {:else}
     <div class="column left" bind:this={leftColumn}>
-      {#if screen === 'DUNGEON' || screen === 'COMBAT'} 
+      {#if player.location === 'dungeon'} 
         <DungeonView
           {tile}
           level={level}
           coordinates={player.coordinates}
           direction={player.direction}
           {navigate}
-          {screen}
+          enableNavigation={ $state.menu === null }
           setInputEnabled={enabled => { $state.enableInput = enabled; }}
         />
-      {:else if screen === 'TOWN'}
-        <TownView onExit={() => $state.screen === 'DUNGEON'} />
+      {:else if player.location === 'town'}
+        <TownView onExit={() => {
+          $state.player.location = 'dungeon';
+          $state.player.coordinates = { ...$state.level.startingPoint };
+          tile = level.tiles[player.coordinates.y][player.coordinates.x]; // ugh
+        }} />
       {/if}
       <MessageView messages={$state.messages} />
     </div>
     <div class="column right">
       <UnitView unit={player.unit} />
-      {#if screen === 'COMBAT'}
+      {#if $state.menu === 'combat'}
         <CombatView handler={combatHandler} />
-      {:else if screen === 'DUNGEON'}
+      {:else if $state.player.location === 'dungeon' }
         <MinimapView
           {level}
           currentTile={tile}
@@ -155,15 +166,6 @@
     width: 320px;
   }
 
-  pre {
-    font-family: monospace;
-    overflow: auto;
-    max-width: 300px;
-    background-color: #f0f0f0;
-    border: 1px solid black;
-    margin: 0;
-  }
-
   @media (max-width: 767px) {
     main {
       align-items: center;
@@ -179,12 +181,6 @@
       padding: 0;
       flex-basis: auto;
       gap: 0;
-    }
-
-    @media (orientation: landscape) {
-      .middle {
-        flex-direction: row;
-      }
     }
   }
 </style>

@@ -38,10 +38,10 @@
 </script>
 
 <div class="map">
-  {#each visibleTiles as row}
+  {#each visibleTiles as row,y}
     <div class="row">
-      {#each row as tile}
-        <div class={tileClass(tile, currentTile, direction)}>  
+      {#each row as tile,x}
+        <div id={`${x}_${y}`} class={tileClass(tile, currentTile, direction)}>  
         </div>
       {/each}
     </div>
@@ -81,11 +81,15 @@
   }
 
   .floor {
-    background-color: lightgray;
+    background-color: #c0c0c0;
   }
 
   .wall {
-    background-color: darkgray;
+    background-color: #808080;
+  }
+
+  .stairs {
+    background-color: #f00080;
   }
 
   .door_horizontal,.door_vertical {

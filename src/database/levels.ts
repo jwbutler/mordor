@@ -7,6 +7,7 @@ const floor = (): Tile => ({ type: 'floor', enemies: [], objects: [] });
 const wall = (): Tile => ({ type: 'wall', enemies: [], objects: [] });
 const horizontalDoor = (): Tile => ({ type: 'door_horizontal', enemies: [], objects: [] });
 const verticalDoor = (): Tile => ({ type: 'door_vertical', enemies: [], objects: [] });
+const stairs = (): Tile => ({ type: 'stairs', enemies: [], objects: [] });
 
 const fromString = (data: string, startingPoint: Coordinates): Level => {
   const tiles: Tile[][] = [];
@@ -19,6 +20,7 @@ const fromString = (data: string, startingPoint: Coordinates): Level => {
         case '#': return wall();
         case '|': return horizontalDoor();
         case '-': return verticalDoor();
+        case 'S': return stairs();
         case 'C': return { type: 'floor', enemies: [createCrocDog()], objects: [] };
         case 'K': return { type: 'floor', enemies: [createKobold()], objects: [] };
         case 'M': return { type: 'floor', enemies: [createMudMan()], objects: [] };
@@ -70,7 +72,7 @@ const biggerLevel = () => {
     # C  # # ## K ##
     # ##  K  ## # ##
     # K####     ####
-    ##   C  ###    #
+    ##   C  ###    S
     ################
   `;
   return fromString(data, { x: 14, y: 7 }); 

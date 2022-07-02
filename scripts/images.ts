@@ -35,6 +35,21 @@ const replaceColors = (imageData: ImageData, paletteSwaps: Pair<RGBA>[]): ImageD
   return new ImageData(array, imageData.width, imageData.height);
 };
 
+/**
+ * TODO why is my macbook not doing this correctly?
+ * @param {string} input
+ * @param {string} src
+ * @param {string} dest
+ * @return {string}
+ */
+const replaceAll = (input, src, dest) => {
+  let output = input;
+  while (output.indexOf(src) > -1) {
+    output = output.replace(src, dest);
+  }
+  return output;
+}
+
 const bmpDir = 'images';
 const tmpDir = 'tmp/images';
 const outDir = 'src/assets/gen';
@@ -91,7 +106,7 @@ const main = async () => {
     const swapped = replaceColors(data, getPaletteSwaps(filename));
     context.putImageData(swapped, 0, 0);
     const outputBuffer = canvas.toBuffer();
-    const outputFilename = `${tmpDir}/${filename.replace('bmp', 'png').replaceAll(' ', '_')}`; 
+    const outputFilename = `${tmpDir}/${replaceAll(filename.replace('bmp', 'png'), ' ', '_')}`;
     writeFileSync(outputFilename, outputBuffer);
     console.log(outputFilename);
   }
