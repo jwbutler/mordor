@@ -4,7 +4,6 @@ import { randBoolean } from '../lib/random';
 import type { Unit } from '../lib/units';
 import { sleep } from '../lib/promises';
 import { getAttackDamage, getDodgeChance, getHitChance, getMitigatedDamage } from '../lib/stats';
-import { playAudio } from '../lib/sounds';
 
 const shortSleepMillis = 150;
 const longSleepMillis = 250;
@@ -78,7 +77,7 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
       if (Math.random() < dodgeChance) {
         state.messages.push(`${defender.name} dodged ${attacker.name}'s attack.`);
       } else {
-        playAudio('hit');
+        // playAudio('hit');
         const attackDamage = getAttackDamage(attacker);
         const mitigatedDamage = getMitigatedDamage(defender, attackDamage);
         state.messages.push(`${attacker.name} hit ${defender.name} for ${mitigatedDamage}.`);

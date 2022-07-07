@@ -16,8 +16,7 @@
   import MessageView from './components/MessageView.svelte';
   import CombatView from './components/CombatView.svelte';
   import MinimapView from './components/MinimapView.svelte';
-  import { playAudio } from './lib/sounds';
-
+  
   let tile = $state.level.tiles[$state.player.coordinates.y][$state.player.coordinates.x];
   let player: Player;
   $: player =  $state.player;
@@ -51,7 +50,7 @@
       return;
     }
     
-    playAudio('footstep');
+    // playAudio('footstep');
 
     const { coordinates, direction } = navigate({
       coordinates: $state.player.coordinates,
@@ -68,7 +67,7 @@
       if (player.unit.life < player.unit.maxLife || player.unit.mana < player.unit.maxMana) {
         player.unit.life = player.unit.maxLife;
         player.unit.mana = player.unit.maxMana;
-        $state.messages.push('You feel much better.');
+        $state.messages = [...$state.messages, 'You feel much better.'];
       }
     } else if (!isWallLike(nextTile, direction)) {
       player.coordinates = coordinates;

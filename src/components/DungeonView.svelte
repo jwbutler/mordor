@@ -132,7 +132,7 @@
         source: bufferElement,
         dest: canvasElement,
         delay: 50,
-        frames: 3
+        frames: 2
       });
     } else {
       const imageData = bufferContext.getImageData(0, 0, bufferElement.width, bufferElement.height);
