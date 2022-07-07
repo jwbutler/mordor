@@ -2,14 +2,14 @@ import { Readable, writable } from 'svelte/store';
 import type { Level } from '../lib/levels';
 import type { Player } from '../lib/player';
 
-type Screen = 'INTRO' | 'TOWN' | 'DUNGEON' | 'COMBAT';
+type Menu = 'intro' | 'combat';
 
 type GameState = {
   level: Level,
   player: Player,
   enableInput: boolean,
   messages: string[],
-  screen: Screen
+  menu: Menu | null
 };
 
 type InitialState = {
@@ -27,7 +27,7 @@ const initialize = ({ level, player }: InitialState) => {
     player,
     enableInput: true,
     messages: [],
-    screen: 'INTRO'
+    menu: null
   });
 };
 
@@ -38,5 +38,5 @@ export {
 
 export type {
   GameState,
-  Screen
+  Menu
 }

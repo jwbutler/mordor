@@ -25,32 +25,8 @@
 
 <div class="column">
   <div class="cell">
-    {#if screen === 'DUNGEON' || screen === 'COMBAT'} 
-      <DungeonView
-        {tile}
-        level={level}
-        coordinates={player.coordinates}
-        direction={player.direction}
-        {navigate}
-        {screen}
-        {setInputEnabled}
-      />
-    {:else if screen === 'TOWN'}
-      <TownView onExit={() => screen === 'DUNGEON'} />
-    {/if}
-    <MessageView messages={messages} />
   </div>
   <div class="cell">
-    {#if screen === 'COMBAT'}
-      <CombatView handler={combatHandler} />
-    {:else if screen === 'DUNGEON'}
-      <MinimapView
-        {level}
-        currentTile={tile}
-        coordinates={player.coordinates}
-        direction={player.direction}
-      />
-    {/if}
   </div>
 </div>
 

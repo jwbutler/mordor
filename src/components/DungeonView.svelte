@@ -9,8 +9,7 @@
   import { rotateLeft, rotateRight } from '../lib/geometry';
   import { createImage } from '../lib/images';
   import { getTile, getTilesInView } from '../lib/levels';
-  import { isDoor, isDoorFacingDirection, isWall, isWallLike } from '../lib/tiles';
-  import type { Screen } from '../stores/state';
+  import { isDoor, isDoorFacingDirection, isStairs, isWall, isWallLike } from '../lib/tiles';
   import ControlsView from './ControlsView2.svelte';
 
   export let tile: Tile;
@@ -18,7 +17,7 @@
   export let direction: CompassDirection;
   export let coordinates: Coordinates;
   export let navigate: (relativeDirection: RelativeDirection) => Promise<void>;
-  export let screen: Screen;
+  export let enableNavigation: boolean;
   export let setInputEnabled: (enabled: boolean) => void;
 
   const maxDepth = 4;
@@ -31,6 +30,7 @@
     center: (string | null)[],
     right: (string | null)[],
     doors: (string | null)[],
+    stairs: (string | null)[],
     unit: (string | null)
   }
   
@@ -41,6 +41,7 @@
     wallsLeft,
     wallsRight,
     doors,
+    stairs,
     floorCeiling
   } = getDungeonImages();
  
@@ -51,6 +52,7 @@
       center: [],
       right: [],
       doors: [],
+      stairs: [],
       unit: null
     };
     
@@ -62,7 +64,7 @@
         : null;
       images['left'].push(left);
       
-      const center = (isWall(tiles['center'][i + 1]) || isDoor(tiles['center'][i + 1]))
+      const center = (isWall(tiles['center'][i + 1]) || isDoor(tiles['center'][i + 1]) || isStairs(tiles['center'][i + 1]))
         ? wallsCenter[i]
         : null;
       images['center'].push(center);
@@ -78,6 +80,11 @@
         ? doors[i]
         : null;
       images['doors'].push(door);
+      
+      const stair = (tiles['center'][i + 1]?.type === 'stairs')
+        ? stairs[i]
+        : null;
+      images['stairs'].push(stair);
     }
   
     const tile = getTile(level, coordinates);
@@ -104,11 +111,12 @@
     
     setInputEnabled(false);
     
-    const bufferContext = bufferElement?.getContext('2d');
+    const bufferContext = bufferElement.getContext('2d') as CanvasRenderingContext2D;
     bufferContext.fillStyle = 'black';
     await drawImage(images.floorCeiling, bufferContext);
+
     for (let i = 3; i >= 0; i--) {
-      for (const category of ['left', 'center', 'right', 'doors']) {
+      for (const category of ['left', 'center', 'right', 'doors', 'stairs']) {
         const image = images[category]?.[i];
         if (image) {
           await drawImage(image, bufferContext);
@@ -124,7 +132,7 @@
         source: bufferElement,
         dest: canvasElement,
         delay: 50,
-        frames: 3
+        frames: 2
       });
     } else {
       const imageData = bufferContext.getImageData(0, 0, bufferElement.width, bufferElement.height);
@@ -159,10 +167,10 @@
 <style>
   .container {
     position: relative;
+    width: 640px;
+    height: 480px;
   }
   .dungeon {
-    width: 100%;
-    height: 100%;
     border: 1px solid black;
     border-radius: 10px;
     overflow: hidden;

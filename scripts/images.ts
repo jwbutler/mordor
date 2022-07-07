@@ -91,7 +91,7 @@ const main = async () => {
     const swapped = replaceColors(data, getPaletteSwaps(filename));
     context.putImageData(swapped, 0, 0);
     const outputBuffer = canvas.toBuffer();
-    const outputFilename = `${tmpDir}/${filename.replace('bmp', 'png').replaceAll(' ', '_')}`; 
+    const outputFilename = `${tmpDir}/${filename.replace('bmp', 'png').replaceAll(/ /g, '_')}`;
     writeFileSync(outputFilename, outputBuffer);
     console.log(outputFilename);
   }

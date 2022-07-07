@@ -29,16 +29,17 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
   let defender: Unit;
 
   const startCombat = async (enemy: Unit, state: GameState) => {
+    state.messages.push(`${enemy.name} appeared.`);
     await sleep(shortSleepMillis);
     if (randBoolean()) {
       attacker = enemy;
       defender = state.player.unit;
-      state.screen = 'COMBAT';
+      state.menu = 'combat';
       await playTurn(state);
     } else {
       attacker = state.player.unit;
       defender = enemy;
-      state.screen = 'COMBAT';
+      state.menu = 'combat';
     }
   };
 
@@ -49,7 +50,7 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
     await render();
     if (defender.life <= 0) {
       await sleep(longSleepMillis);
-      state.screen = 'DUNGEON';
+      state.menu = null;
       stateStore.set({ ... state });
     } else {
       const _attacker = attacker;
@@ -59,12 +60,11 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
   };
   
   const playTurnPair = async (state: GameState): Promise<void> => {
-    // checkState(attacker === (await stateStore.get()).player.unit);
     await sleep(shortSleepMillis);
     await playTurn(state);
     stateStore.set({ ... state });
     await sleep(longSleepMillis);
-    if (state.screen === 'COMBAT') {
+    if (state.menu === 'combat') {
       await playTurn(state);
       stateStore.set({ ... state });
     }
@@ -75,16 +75,17 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
     if (Math.random() < hitChance) {
       const dodgeChance = getDodgeChance(defender);
       if (Math.random() < dodgeChance) {
-        state.messages.push(`${defender.name} dodged ${attacker.name}'s attack!`);
+        state.messages.push(`${defender.name} dodged ${attacker.name}'s attack.`);
       } else {
+        // playAudio('hit');
         const attackDamage = getAttackDamage(attacker);
         const mitigatedDamage = getMitigatedDamage(defender, attackDamage);
-        state.messages.push(`${attacker.name} hit ${defender.name} for ${mitigatedDamage}!`);
+        state.messages.push(`${attacker.name} hit ${defender.name} for ${mitigatedDamage}.`);
         takeDamage(defender, mitigatedDamage);
         stateStore.set({ ... state });
         if (defender.life <= 0) {
           await sleep(shortSleepMillis);
-          state.messages.push(`${defender.name} dies!`);
+          state.messages.push(`${defender.name} died.`);
           const playerUnit = state.player.unit;
           if (defender === playerUnit) {
             alert('GAME OVER!');
@@ -101,7 +102,7 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
         }
       }
     } else {
-      state.messages.push(`${attacker.name} missed ${defender.name}!`);
+      state.messages.push(`${attacker.name} missed ${defender.name}.`);
     }
   };
   

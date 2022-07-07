@@ -1,18 +1,22 @@
 <script lang="ts">
   import { createCombatHandler } from './classes/CombatHandler';
   import IntroView from "./components/IntroView.svelte";
-  import MainColumn from "./components/MainColumn.svelte";
   import UnitView from './components/UnitView.svelte';
   import type { RelativeDirection } from './lib/geometry';
-  import { state } from './stores/state';
+  import { Menu, state } from './stores/state';
   import type { Level } from './lib/levels';
   import type { Player } from './lib/player';
   import { move, navigate } from './lib/geometry';
   import { onMount, onDestroy } from 'svelte';
   import { getRelativeDirection } from './lib/input';
   import { getTile } from './lib/levels';
-  import { isDoorFacingDirection, isWallLike } from './lib/tiles';
-
+  import { isDoorFacingDirection, isStairs, isWallLike } from './lib/tiles';
+  import DungeonView from './components/DungeonView.svelte';
+  import TownView from './components/TownView.svelte';
+  import MessageView from './components/MessageView.svelte';
+  import CombatView from './components/CombatView.svelte';
+  import MinimapView from './components/MinimapView.svelte';
+  
   let tile = $state.level.tiles[$state.player.coordinates.y][$state.player.coordinates.x];
   let player: Player;
   $: player =  $state.player;
@@ -42,9 +46,12 @@
   };
   
   const handleNavigate = async (relativeDirection: RelativeDirection) => {
-    if (!$state.enableInput || $state.screen === 'COMBAT') {
+    if (!$state.enableInput || $state.menu !== null) {
       return;
     }
+    
+    // playAudio('footstep');
+
     const { coordinates, direction } = navigate({
       coordinates: $state.player.coordinates,
       compassDirection: $state.player.direction,
@@ -54,6 +61,14 @@
     const nextTile = getTile(level, coordinates);
     if (isDoorFacingDirection(nextTile, direction)) {
       player.coordinates = move(coordinates, direction); // assume the developer put a floor tile there...
+    } else if (isStairs(nextTile)) {
+      player.location = 'town';
+      player.coordinates = { x: 0, y: 0 };
+      if (player.unit.life < player.unit.maxLife || player.unit.mana < player.unit.maxMana) {
+        player.unit.life = player.unit.maxLife;
+        player.unit.mana = player.unit.maxMana;
+        $state.messages = [...$state.messages, 'You feel much better.'];
+      }
     } else if (!isWallLike(nextTile, direction)) {
       player.coordinates = coordinates;
     }
@@ -62,41 +77,59 @@
     await loadTile();
   };
 
-  let middleColumn: HTMLElement;
+  let leftColumn: HTMLElement;
 
   onMount(() => {
     window.addEventListener('keydown', handleKeyDown);
-    if (middleColumn) {
-      middleColumn.scrollIntoView();
+    if (leftColumn) {
+      leftColumn.scrollIntoView();
     }
   });
 
   onDestroy(() => {
     window.removeEventListener('keydown', handleKeyDown);
   });
+  
+  let menu: Menu | null;
+  $: menu = $state.menu;
 </script>
 
 <main>
-  {#if $state.screen === 'INTRO'}
+  {#if menu === 'INTRO'}
     <IntroView onComplete={() => { $state.screen = 'DUNGEON'; }}/>
   {:else}
-    <div class="column left">
-      <UnitView unit={player.unit} />
-    </div>
-    <div class="column middle" bind:this={middleColumn}>
-      <MainColumn
-        {tile}
-        {level}
-        {player}
-        screen={$state.screen}
-        messages={$state.messages}
-        {combatHandler}
-        navigate={handleNavigate}
-        setInputEnabled={enabled => { $state.enableInput = enabled; }} 
-      />
+    <div class="column left" bind:this={leftColumn}>
+      {#if player.location === 'dungeon'} 
+        <DungeonView
+          {tile}
+          level={level}
+          coordinates={player.coordinates}
+          direction={player.direction}
+          {navigate}
+          enableNavigation={ $state.menu === null }
+          setInputEnabled={enabled => { $state.enableInput = enabled; }}
+        />
+      {:else if player.location === 'town'}
+        <TownView onExit={() => {
+          $state.player.location = 'dungeon';
+          $state.player.coordinates = { ...$state.level.startingPoint };
+          tile = level.tiles[player.coordinates.y][player.coordinates.x]; // ugh
+        }} />
+      {/if}
+      <MessageView messages={$state.messages} />
     </div>
     <div class="column right">
-      <pre>{JSON.stringify($state,null,2)}</pre>
+      <UnitView unit={player.unit} />
+      {#if $state.menu === 'combat'}
+        <CombatView handler={combatHandler} />
+      {:else if $state.player.location === 'dungeon' }
+        <MinimapView
+          {level}
+          currentTile={tile}
+          coordinates={player.coordinates}
+          direction={player.direction}
+        />
+      {/if}
     </div>
   {/if}
 </main>
@@ -108,8 +141,7 @@
     align-items: stretch;
     gap: 20px;
     padding: 20px;
-    width: 100%;
-    height: 100%;
+    height: 640px;
     max-width: 1280px;
     margin: 0 auto;
   }
@@ -118,29 +150,19 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
     scroll-snap-align: center;
   }
 
-  .middle {
-    justify-content: stretch;
+  .left {
     align-items: stretch;
-    flex: 1 0 30%;
-    gap: 20px;
+    width: 640px;
   }
 
-  .left,.right {
-    flex: 0 1 30%;
+  .right {
     align-items: center;
-    justify-content: flex-start;
-  }
-
-  pre {
-    font-family: monospace;
-    overflow: auto;
-    max-width: 300px;
-    background-color: #f0f0f0;
-    border: 1px solid black;
-    margin: 0;
+    width: 320px;
   }
 
   @media (max-width: 767px) {
@@ -158,12 +180,6 @@
       padding: 0;
       flex-basis: auto;
       gap: 0;
-    }
-
-    @media (orientation: landscape) {
-      .middle {
-        flex-direction: row;
-      }
     }
   }
 </style>

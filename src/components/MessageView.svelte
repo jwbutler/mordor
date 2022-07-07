@@ -10,7 +10,7 @@
   }
 </script>
 
-<div class="border">
+<div class="container">
   <textarea
     disabled
     bind:this={component}
@@ -21,7 +21,7 @@
   textarea {
     font-family: monospace;
     width: 100%;
-    height: 96px;
+    height: 100%;
     resize: none;
     overflow-y: auto;
     border: none;
@@ -31,14 +31,17 @@
     color: black;
   }
   
-  .border {
+  .container {
     border: 1px solid black;
     border-radius: 10px;
     overflow: hidden;
+    background-color: white;
+    width: 640px;
+    height: 140px;
   }
   
   @media (max-width: 767px) {
-    .border {
+    .container {
       border-radius: 0;
     }
     @media (orientation: portrait) {

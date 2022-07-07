@@ -1,10 +1,7 @@
 <script type="ts">
-  import {equipmentSlotToString, equipmentSlotValues} from '../lib/items';
   import type { Stats } from '../lib/stats';
-  import { statValues } from '../lib/stats';
   import type { Unit } from '../lib/units';
   import { getModifiedStats } from '../lib/stats';
-  import { titleCase } from '../lib/strings';
   import ResourceMeter from "./ResourceMeter.svelte";
 
   export let unit: Unit;
@@ -60,18 +57,6 @@
       <div>{unit.mana} / {unit.maxMana}</div>
     </td>
   </tr>
-  {#each statValues as stat}
-    <tr>
-      <td>{titleCase(stat)}</td>
-      <td>{modifiedStats[stat]} ({unit.stats[stat]})</td>
-    </tr>
-  {/each}
-  {#each equipmentSlotValues as slot}
-    <tr>
-      <td>{equipmentSlotToString(slot)}</td>
-      <td>{unit.equipment[slot]?.name || ''}</td>
-    </tr>
-  {/each} 
 </table>
 
 <style>
@@ -79,7 +64,6 @@
     table-layout: fixed;
     border-collapse: collapse;
     width: 100%;
-    height: 100%;
     border: 1px solid black;
     background-color: #ffffff;
   }

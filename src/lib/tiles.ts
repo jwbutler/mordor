@@ -2,7 +2,7 @@ import type { CompassDirection } from './geometry';
 import type { MapObject } from './objects';
 import type { Unit } from './units';
 
-type TileType = 'floor' | 'wall' | 'door_horizontal' | 'door_vertical';
+type TileType = 'floor' | 'wall' | 'door_horizontal' | 'door_vertical' | 'stairs';
 
 type Tile = {
   type: TileType,
@@ -32,11 +32,14 @@ const isDoorFacingDirection = (tile: Tile | null, direction: CompassDirection): 
   }
 };
 
+const isStairs = (tile: Tile | null) => tile?.type === 'stairs';
+
 export type { Tile };
 
 export {
   isDoor,
   isDoorFacingDirection,
+  isStairs, 
   isWall,
   isWallLike
 };
