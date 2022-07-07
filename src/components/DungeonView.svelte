@@ -158,11 +158,11 @@
 <div class="container">
   <canvas class="dungeon" bind:this={canvasElement} width={640} height={480}>
   </canvas>
-  {#if screen === 'DUNGEON'}
+  {#if enableNavigation}
     <ControlsView {navigate} />
   {/if}
+  <canvas class="buffer" bind:this={bufferElement} width={640} height={480}></canvas>
 </div>
-<canvas class="buffer" bind:this={bufferElement} width={640} height={480}></canvas>
 
 <style>
   .container {
@@ -174,6 +174,8 @@
     border: 1px solid black;
     border-radius: 10px;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
   }
 
   .buffer {
@@ -181,9 +183,11 @@
   }
   
   @media (max-width: 767px) {
-    .dungeon {
+    .container {
       width: 100%;
-      flex-basis: 80%;
+      height: initial;
+    }
+    .dungeon {
       border-radius: 0;
     }
   }
