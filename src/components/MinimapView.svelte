@@ -53,12 +53,12 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 320px;
+    height: 100%;
     align-items: stretch;
     border: 1px solid black;
-    border-radius: 10px;
     overflow: hidden;
     background-color: darkgray;
+    border-radius: 0;
   }
 
   .row {
@@ -74,6 +74,7 @@
     align-items: center;
     justify-content: center;
     flex-basis: 100%;
+    height: 100%;
   }
 
   .tile.current {
@@ -112,12 +113,10 @@
     content: '←'; 
   }
   
-  @media (max-width: 767px) {
+  @media (min-width: 768px) {
     .map {
-      border-radius: 0;
-    }
-    .tile {
-      height: 100%;
+      height: 320px;
+      border-radius: 10px;
     }
   }
 </style>

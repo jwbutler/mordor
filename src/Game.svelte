@@ -109,6 +109,18 @@
           enableNavigation={ $state.menu === null }
           setInputEnabled={enabled => { $state.enableInput = enabled; }}
         />
+        <div class="mobile-only">
+          {#if $state.menu === 'combat'}
+            <CombatView handler={combatHandler} />
+          {:else}
+            <MinimapView
+              {level}
+              currentTile={tile}
+              coordinates={player.coordinates}
+              direction={player.direction}
+            />
+          {/if}
+        </div>
       {:else if player.location === 'town'}
         <TownView onExit={() => {
           $state.player.location = 'dungeon';
@@ -138,12 +150,14 @@
   main {
     display: flex;
     flex-direction: row;
-    align-items: stretch;
-    gap: 20px;
-    padding: 20px;
     height: 640px;
     max-width: 1280px;
     margin: 0 auto;
+    align-items: center;
+    gap: 0;
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    padding: 0;
   }
 
   .column {
@@ -151,35 +165,54 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 20px;
     scroll-snap-align: center;
+    width: 100vw;
+    flex-shrink: 0;
+    padding: 0;
+    flex-basis: auto;
   }
 
   .left {
     align-items: stretch;
-    width: 640px;
   }
 
   .right {
     align-items: center;
-    width: 320px;
   }
 
-  @media (max-width: 767px) {
+  .left > :nth-child(1) {
+    flex: 1 1 auto;
+  }
+
+  .left > :nth-child(2) {
+    flex: 1 1 auto;
+  }
+
+  .left > :nth-child(3) {
+    flex: 0 1 auto;
+  }
+
+  @media (min-width: 768px) {
+    .mobile-only {
+      display: none;
+    }
+
     main {
-      align-items: center;
-      gap: 0;
-      scroll-snap-type: x mandatory;
-      overflow-x: auto;
-      padding: 0;
+      align-items: stretch;
+      gap: 20px;
+      padding: 20px;
     }
 
     .column {
-      width: 100vw;
-      flex-shrink: 0;
-      padding: 0;
-      flex-basis: auto;
-      gap: 0;
+      gap: 20px;
+    }
+
+    .left {
+      width: 640px;
+    }
+
+    .right {
+      width: 320px;
     }
   }
 </style>
