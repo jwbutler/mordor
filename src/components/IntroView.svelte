@@ -36,7 +36,7 @@
   .intro {
     width: 100%;
     height: 100%;
-    font-size: 18px;
+    font-size: 8px;
     color: black;
     text-align: center;
   }
