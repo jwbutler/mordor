@@ -39,18 +39,20 @@ const bmpDir = 'images';
 const tmpDir = 'tmp/images';
 const outDir = 'src/assets/gen';
 
-const WHITE: RGBA = [255, 255, 255, 255];
-const LIGHT_GRAY: RGBA = [192, 192, 192, 255];
-const LIGHTER_GRAY: RGBA = [224, 224, 224, 255];
-const DARK_GRAY: RGBA = [128, 128, 128, 255];
-const DARKER_GRAY: RGBA = [64, 64, 64, 255];
-const RED: RGBA = [255, 0, 0, 255];
-const YELLOW: RGBA = [255, 255, 0, 255];
-const DARK_GREEN: RGBA = [0, 128, 0, 255];
 const BLUE: RGBA = [0, 0, 255, 255];
 const BROWN: RGBA = [128, 64, 0, 255];
+const LIGHT_GRAY: RGBA = [192, 192, 192, 255];
+const LIGHTER_GRAY: RGBA = [224, 224, 224, 255];
 const DARK_BROWN: RGBA = [64, 32, 0, 255];
+const DARK_GRAY: RGBA = [128, 128, 128, 255];
+const DARK_GREEN: RGBA = [0, 128, 0, 255];
+const DARK_YELLOW: RGBA = [128, 128, 0, 255];
+const DARKER_GRAY: RGBA = [64, 64, 64, 255];
+const MAGENTA: RGBA = [255, 0, 255, 255];
+const RED: RGBA = [255, 0, 0, 255];
 const TRANSPARENT: RGBA = [0, 0, 0, 0];
+const WHITE: RGBA = [255, 255, 255, 255];
+const YELLOW: RGBA = [255, 255, 0, 255];
 
 const getPaletteSwaps = (filename: string): Pair<RGBA>[] => {
   if (filename.match(/hall/g)) {
@@ -68,6 +70,13 @@ const getPaletteSwaps = (filename: string): Pair<RGBA>[] => {
       [WHITE, TRANSPARENT],
       [YELLOW, BROWN],
       [BLUE, BROWN],
+    ];
+  } else if (filename.match(/door/g)) {
+    return [
+      [WHITE, TRANSPARENT],
+      [MAGENTA, BROWN],
+      [BLUE, DARK_GRAY],
+      [YELLOW, DARK_YELLOW]
     ];
   } else {
     return [
