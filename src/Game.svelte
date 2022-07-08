@@ -107,7 +107,7 @@
           level={level}
           coordinates={player.coordinates}
           direction={player.direction}
-          {navigate}
+          navigate={handleNavigate}
           enableNavigation={ $state.menu === null }
           setInputEnabled={enabled => { $state.enableInput = enabled; }}
         />
