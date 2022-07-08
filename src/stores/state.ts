@@ -14,20 +14,21 @@ type GameState = {
 
 type InitialState = {
   level: Level,
-  player: Player
+  player: Player,
+  menu: Menu | null
 };
 
 const state = writable<GameState>();
 
 const get = <T> (store: Readable<T>): Promise<T> => new Promise(store.subscribe);
 
-const initialize = ({ level, player }: InitialState) => {
+const initialize = ({ level, player, menu }: InitialState) => {
   state.set({
     level,
     player,
     enableInput: true,
     messages: [],
-    menu: null
+    menu
   });
 };
 

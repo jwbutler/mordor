@@ -90,7 +90,7 @@
     const tile = getTile(level, coordinates);
     const enemy = tile?.enemies[0];
     if (enemy?.life > 0) {
-      images['unit'] = enemy?.sprite?.image || null;
+      images['unit'] = enemy?.sprite?.images.standing || null;
     }
     
     return images;

@@ -1,3 +1,4 @@
+import { playAudio } from '../lib/sounds';
 import { levelUp } from '../lib/units';
 import { state as stateStore, type GameState } from '../stores/state';
 import { randBoolean } from '../lib/random';
@@ -77,7 +78,7 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
       if (Math.random() < dodgeChance) {
         state.messages.push(`${defender.name} dodged ${attacker.name}'s attack.`);
       } else {
-        // playAudio('hit');
+        await playAudio(attacker.sprite.sounds.attack);
         const attackDamage = getAttackDamage(attacker);
         const mitigatedDamage = getMitigatedDamage(defender, attackDamage);
         state.messages.push(`${attacker.name} hit ${defender.name} for ${mitigatedDamage}.`);
@@ -85,6 +86,7 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
         stateStore.set({ ... state });
         if (defender.life <= 0) {
           await sleep(shortSleepMillis);
+          await playAudio(defender.sprite.sounds.die);
           state.messages.push(`${defender.name} died.`);
           const playerUnit = state.player.unit;
           if (defender === playerUnit) {

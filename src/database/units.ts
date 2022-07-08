@@ -2,6 +2,7 @@ import { NoobSword } from '../lib/items';
 import { koboldSprite } from '../lib/sprites';
 import { crocDogSprite } from '../lib/sprites';
 import { mudManSprite } from '../lib/sprites';
+import { playerSprite } from '../lib/sprites';
 import { UnitBuilder } from '../lib/units';
 import type { Unit } from '../lib/units';
 
@@ -58,7 +59,7 @@ const createPlayerUnit = (): Unit => new UnitBuilder()
     constitution: 8
   })
   .equipment(NoobSword)
-  .sprite(koboldSprite) // just a placeholder
+  .sprite(playerSprite) // just a placeholder
   .build();
 
 export {

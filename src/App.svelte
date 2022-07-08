@@ -17,7 +17,7 @@
     location: 'dungeon'
   };
   
-  initializeState({ level, player });
+  initializeState({ level, player, menu: 'intro' });
 </script>
 
 <Game />

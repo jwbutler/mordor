@@ -1,8 +1,8 @@
-import footstepSrc from '../assets/footstep.mp3';
-import hitSrc from '../assets/hit.mp3';
+export const playAudio = async (sound: string) => new Audio(sound).play();
 
-type SoundEnum = 'footstep' | 'hit';
-export const playAudio = (sound: SoundEnum) => ({
-  'footstep': () => new Audio(footstepSrc).play(),
-  'hit': () => new Audio(hitSrc).play()
-}[sound])();
+export const playLoop = async (sound: string) => {
+  const audio = new Audio(sound);
+  audio.volume = 0.5;
+  audio.loop = true;
+  return audio.play();
+};

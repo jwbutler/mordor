@@ -3,6 +3,7 @@
   import IntroView from "./components/IntroView.svelte";
   import UnitView from './components/UnitView.svelte';
   import type { RelativeDirection } from './lib/geometry';
+  import { playLoop } from './lib/sounds';
   import { Menu, state } from './stores/state';
   import type { Level } from './lib/levels';
   import type { Player } from './lib/player';
@@ -16,6 +17,7 @@
   import MessageView from './components/MessageView.svelte';
   import CombatView from './components/CombatView.svelte';
   import MinimapView from './components/MinimapView.svelte';
+  import five_eight_mp3 from './sounds/5-8.mp3';
   
   let tile = $state.level.tiles[$state.player.coordinates.y][$state.player.coordinates.x];
   let player: Player;
@@ -95,8 +97,8 @@
 </script>
 
 <main>
-  {#if menu === 'INTRO'}
-    <IntroView onComplete={() => { $state.screen = 'DUNGEON'; }}/>
+  {#if menu === 'intro'}
+    <IntroView onComplete={() => { $state.menu = null; playLoop(five_eight_mp3); }}/>
   {:else}
     <div class="column left" bind:this={leftColumn}>
       {#if player.location === 'dungeon'} 
