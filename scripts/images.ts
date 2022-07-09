@@ -37,7 +37,7 @@ const replaceColors = (imageData: ImageData, paletteSwaps: Pair<RGBA>[]): ImageD
 
 const bmpDir = 'images';
 const tmpDir = 'tmp/images';
-const outDir = 'src/assets/gen';
+const outDir = 'src/images/gen';
 
 const BLUE: RGBA = [0, 0, 255, 255];
 const BROWN: RGBA = [128, 64, 0, 255];
