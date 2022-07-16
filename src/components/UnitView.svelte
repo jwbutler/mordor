@@ -1,9 +1,11 @@
 <script type="ts">
+  import type { Player } from '../lib/player';
   import type { Stats } from '../lib/stats';
   import type { Unit } from '../lib/units';
   import { getModifiedStats } from '../lib/stats';
   import ResourceMeter from "./ResourceMeter.svelte";
 
+  export let player: Player;
   export let unit: Unit;
   let modifiedStats: Stats;
   modifiedStats = getModifiedStats(unit);
@@ -56,6 +58,10 @@
       </div>
       <div>{unit.mana} / {unit.maxMana}</div>
     </td>
+  </tr>
+  <tr>
+    <td>Gold</td>
+    <td>{player.gold}</td>
   </tr>
 </table>
 

@@ -95,9 +95,14 @@ const createCombatHandler = ({ render }: Props): CombatHandler => {
             const { x, y } = state.player.coordinates;
             const tile = state.level.tiles[y][x];
             tile.enemies.splice(tile.enemies.indexOf(defender));
+            const gold = 10;
+            state.player.gold += gold;
+            state.messages.push(`You picked up ${gold} gold.`);
             playerUnit.experience++;
             if (playerUnit.experience >= playerUnit.experienceToNextLevel) {
+              await sleep(shortSleepMillis);
               levelUp(playerUnit);
+              state.messages.push(`You leveled up! Welcome to level ${playerUnit.level}.`);
             }
           }
           stateStore.set({ ... state });

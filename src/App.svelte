@@ -14,7 +14,8 @@
     unit: playerUnit,
     coordinates: level.startingPoint,
     direction: 'east',
-    location: 'dungeon'
+    location: 'dungeon',
+    gold: 0
   };
   
   initializeState({ level, player, menu: 'intro' });

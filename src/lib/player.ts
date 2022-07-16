@@ -6,7 +6,8 @@ type Player = {
   unit: Unit,
   location: Location,
   coordinates: Coordinates,
-  direction: CompassDirection
+  direction: CompassDirection,
+  gold: number
 };
 
 export type { Player };

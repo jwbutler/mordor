@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createCombatHandler } from './classes/CombatHandler';
-  import IntroView from "./components/IntroView.svelte";
+  import IntroView from './components/IntroView.svelte';
   import UnitView from './components/UnitView.svelte';
   import type { RelativeDirection } from './lib/geometry';
   import { playLoop } from './lib/sounds';
@@ -78,6 +78,12 @@
     tile = level.tiles[player.coordinates.y][player.coordinates.x];
     await loadTile();
   };
+  
+  const returnToDungeon = () => {
+    $state.player.location = 'dungeon';
+    $state.player.coordinates = { ...$state.level.startingPoint };
+    tile = level.tiles[player.coordinates.y][player.coordinates.x]; // ugh
+  };
 
   let leftColumn: HTMLElement;
 
@@ -124,16 +130,19 @@
           {/if}
         </div>
       {:else if player.location === 'town'}
-        <TownView onExit={() => {
-          $state.player.location = 'dungeon';
-          $state.player.coordinates = { ...$state.level.startingPoint };
-          tile = level.tiles[player.coordinates.y][player.coordinates.x]; // ugh
-        }} />
+        <TownView onExit={returnToDungeon} />
+      {:else if player.location === 'shop'}
+        TODO SHOP
+      {:else if player.location === 'tavern'}
+        TODO TAVERN
       {/if}
       <MessageView messages={$state.messages} />
     </div>
     <div class="column right">
-      <UnitView unit={player.unit} />
+      <UnitView
+        player={player}
+        unit={player.unit}
+      />
       {#if $state.menu === 'combat'}
         <CombatView handler={combatHandler} />
       {:else if $state.player.location === 'dungeon' }
